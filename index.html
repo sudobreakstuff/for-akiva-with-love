@@ -49,6 +49,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 #ttl h1{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(1.8rem,6.5vw,3.5rem);text-align:center;line-height:1.2;color:#f5f0e8;letter-spacing:0.04em}
 #ttl h1 .nm{display:block;font-style:italic;margin-top:0.08em;background:linear-gradient(135deg,#f0d78c,#e8c4a0,#d4a5ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 #ttl .sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(0.85rem,1.8vw,1.1rem);color:rgba(245,240,232,0.3);margin-top:1em;letter-spacing:0.06em}
+#ttl .by{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(0.5rem,1vw,0.65rem);color:rgba(245,240,232,0.12);margin-top:2.5em;letter-spacing:0.12em}
 #ttl .hint{position:absolute;bottom:12%;font-size:clamp(0.55rem,1vw,0.7rem);font-weight:300;color:rgba(245,240,232,0.15);letter-spacing:0.22em;text-transform:uppercase;animation:pulse 3.5s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:0.15}50%{opacity:0.6}}
 #soil{position:absolute;bottom:0;left:0;right:0;height:50%;z-index:4;cursor:pointer}
@@ -125,8 +126,8 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 #card.last .ms{color:rgba(255,240,232,0.8)}
 #card.last .photo{background:linear-gradient(135deg,rgba(40,25,15,0.3),rgba(30,20,10,0.3))}
 /* === FINALE === */
-#finale{position:fixed;top:0;left:0;width:100%;height:100%;z-index:15;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity 2s ease,visibility 2s ease;background:rgba(3,5,10,0.4);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
-#finale.show{opacity:1;visibility:visible}
+#finale{position:fixed;top:0;left:0;width:100%;height:100%;z-index:15;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;transition:opacity 2s ease,visibility 2s ease;background:rgba(3,5,10,0.4);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+#finale.show{opacity:1;visibility:visible;pointer-events:auto}
 #finale .glowbg{position:absolute;top:50%;left:50%;width:min(500px,80vw);height:min(500px,80vw);transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,215,140,0.08) 0%,rgba(255,200,160,0.04) 30%,rgba(255,180,200,0.02) 55%,transparent 70%);border-radius:50%;pointer-events:none;animation:glowPulse 4s ease-in-out infinite}
 @keyframes glowPulse{0%,100%{opacity:0.7;transform:translate(-50%,-50%) scale(0.95)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}}
 #finale .heart{font-size:clamp(4.5rem,12vw,7rem);line-height:1;margin-bottom:1.2rem;opacity:0;transform:scale(0);transition:all 1.8s cubic-bezier(0.34,1.56,0.64,1);filter:drop-shadow(0 0 30px rgba(255,215,140,0.25)) drop-shadow(0 0 80px rgba(255,215,140,0.1)) drop-shadow(0 0 120px rgba(255,200,160,0.05));z-index:2;color:#fff;pointer-events:none}
@@ -188,6 +189,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 <div id="ttl" onclick="tapTitle(event)" ontouchstart="tapTitle(event)">
   <h1>For <span class="nm">Akiva, With Love</span></h1>
   <div class="sub">a garden of memories, growing just for you</div>
+  <div class="by">made by Shahid for Akiva</div>
   <div class="hint">tap anywhere</div>
 </div>
 <div id="hint"><span class="spark">✦</span> tap the earth to plant a seed <span class="spark">✦</span></div>
@@ -358,8 +360,8 @@ function openCard(i){
   if(S.bloomed>=FLOWERS.length)setTimeout(()=>showFinale(),1200);
 }
 function showFinale(){if(S.finale)return;S.finale=true;document.getElementById('finale').classList.add('show');for(let i=0;i<6;i++)setTimeout(()=>{brst(W*0.5+(Math.random()-0.5)*200,H*0.3+(Math.random()-0.5)*120,'#ffd700',30)},i*400)}
-function initAudio(){S.audio=new Audio();S.audio.src='assets/audio/ranjha-flute.mp3';S.audio.loop=false;S.audio.volume=0;S.audio.preload='auto';S.audio.addEventListener('canplaythrough',()=>S.aOk=true);S.audio.addEventListener('error',()=>{})}
-function startAudio(){if(!S.audio||S.aPlay)return;S.aPlay=true;try{S.audio.currentTime=0;S.audio.play().catch(()=>{})}catch(e){}try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=196;g.gain.setValueAtTime(0.08,a.currentTime);g.gain.exponentialRampToValueAtTime(0.001,a.currentTime+4.5);o.connect(g);g.connect(a.destination);o.start(a.currentTime);o.stop(a.currentTime+5)}catch(e){}let v=0;const iv=setInterval(()=>{v+=0.06;if(v>=0.15){v=0.15;clearInterval(iv)}S.audio.volume=v},80);if(S.audio)S.audio.addEventListener('ended',()=>{S.audio.currentTime=0;S.audio.play().catch(()=>{})})}
+function initAudio(){S.audio=new Audio();S.audio.src='assets/audio/ranjha-flute.mp3';S.audio.loop=true;S.audio.volume=0;S.audio.preload='auto';S.audio.addEventListener('canplaythrough',()=>S.aOk=true);S.audio.addEventListener('error',()=>{})}
+function startAudio(){if(!S.audio||S.aPlay)return;S.aPlay=true;try{S.audio.currentTime=2;S.audio.volume=0.15;S.audio.play().catch(()=>{})}catch(e){}try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=196;g.gain.setValueAtTime(0.08,a.currentTime);g.gain.exponentialRampToValueAtTime(0.001,a.currentTime+4.5);o.connect(g);g.connect(a.destination);o.start(a.currentTime);o.stop(a.currentTime+5)}catch(e){}}
 function fadeOutAudio(){if(!S.audio||!S.aPlay)return;let v=Math.min(S.audio.volume||0.15,0.15);const iv=setInterval(()=>{v-=0.006;if(v<=0){v=0;clearInterval(iv);try{S.audio.pause()}catch(e){}}S.audio.volume=Math.max(v,0)},80)}
 function tapTitle(e){
   if(e&&e.preventDefault)e.preventDefault();if(S.started)return;
