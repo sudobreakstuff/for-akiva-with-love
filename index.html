@@ -7,72 +7,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;background:#04070f;font-family:'Inter',sans-serif;color:#f5f0e8;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+html,body{width:100%;height:100%;overflow:hidden;background:#050812;font-family:'Inter',sans-serif;color:#f5f0e8;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-events:none}
 #garden{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;overflow:hidden}
-/* === SKY === */
-#garden .bg{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;background:linear-gradient(180deg,#02040a 0%,#08081a 12%,#0e0c28 25%,#161430 38%,#102010 52%,#0f1a0c 65%,#0a0e06 80%,#060408 100%)}
-/* === MOON === */
-#garden .moon{position:absolute;top:2.5%;right:15%;width:80px;height:80px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(circle at 38% 38%,rgba(252,248,240,0.98),rgba(235,228,245,0.25) 48%,rgba(220,215,240,0.04) 78%);box-shadow:0 0 60px rgba(220,215,240,0.15),0 0 120px rgba(220,215,240,0.06),0 0 200px rgba(180,170,220,0.03);animation:moonGlow 8s ease-in-out infinite}
-@keyframes moonGlow{0%,100%{box-shadow:0 0 60px rgba(220,215,240,0.15),0 0 120px rgba(220,215,240,0.06),0 0 200px rgba(180,170,220,0.03)}50%{box-shadow:0 0 90px rgba(220,215,240,0.22),0 0 160px rgba(220,215,240,0.1),0 0 250px rgba(180,170,220,0.05)}}
-/* === MOONBEAMS === */
-#garden .beam{position:absolute;top:0;pointer-events:none;z-index:1;background:linear-gradient(180deg,rgba(220,215,240,0.04) 0%,rgba(220,215,240,0.015) 20%,rgba(220,215,240,0.005) 50%,transparent 80%);transform-origin:top center;animation:beamSway 14s ease-in-out infinite alternate}
-#garden .beam1{left:8%;width:22%;height:70%;transform:skewX(-7deg);animation-delay:0s}
-#garden .beam2{left:24%;width:15%;height:55%;transform:skewX(-7deg) translateX(-3%);animation-delay:-4s;opacity:0.6}
-#garden .beam3{right:30%;width:18%;height:60%;transform:skewX(-7deg) translateX(2%);animation-delay:-8s;opacity:0.5}
-@keyframes beamSway{0%{transform:skewX(-7deg) translateX(-3%)}100%{transform:skewX(-7deg) translateX(3%)}}
-/* === MAGICAL FLOATING LIGHTS === */
-#garden .lights{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:hidden}
-#garden .lights .l{position:absolute;width:6px;height:6px;border-radius:50%;opacity:0;animation:lightFloat var(--dur,7s) ease-in-out var(--del,0s) infinite}
-#garden .lights .l::after{content:'';position:absolute;top:-10px;left:-10px;width:26px;height:26px;border-radius:50%;background:inherit;filter:blur(8px);opacity:0.4}
-@keyframes lightFloat{0%{transform:translateY(100vh) scale(0);opacity:0}15%{opacity:var(--op,0.6)}85%{opacity:var(--op,0.6)}100%{transform:translateY(-20vh) scale(1);opacity:0}}
-#garden .lights .l1{left:5%;--dur:9s;--del:0s;--op:0.4;background:radial-gradient(circle,rgba(200,180,255,0.7),transparent);width:5px;height:5px}
-#garden .lights .l2{left:15%;--dur:11s;--del:2s;--op:0.35;background:radial-gradient(circle,rgba(180,230,255,0.6),transparent);width:4px;height:4px}
-#garden .lights .l3{left:28%;--dur:8s;--del:4s;--op:0.45;background:radial-gradient(circle,rgba(240,220,180,0.6),transparent);width:7px;height:7px}
-#garden .lights .l4{left:42%;--dur:10s;--del:1s;--op:0.3;background:radial-gradient(circle,rgba(220,200,255,0.5),transparent);width:3px;height:3px}
-#garden .lights .l5{left:55%;--dur:7.5s;--del:5s;--op:0.4;background:radial-gradient(circle,rgba(200,240,230,0.5),transparent);width:5px;height:5px}
-#garden .lights .l6{left:68%;--dur:12s;--del:3s;--op:0.35;background:radial-gradient(circle,rgba(230,200,255,0.5),transparent);width:4px;height:4px}
-#garden .lights .l7{left:80%;--dur:8.5s;--del:6s;--op:0.4;background:radial-gradient(circle,rgba(240,230,200,0.5),transparent);width:6px;height:6px}
-#garden .lights .l8{left:92%;--dur:10.5s;--del:1.5s;--op:0.3;background:radial-gradient(circle,rgba(180,220,255,0.5),transparent);width:4px;height:4px}
-/* === GROUND === */
-#garden .gl{position:absolute;bottom:0;left:0;right:0;height:28%;pointer-events:none;z-index:1;background:linear-gradient(0deg,rgba(6,10,4,0.55) 0%,transparent 100%)}
-#garden .glow-floor{position:absolute;bottom:8%;left:0;right:0;height:15%;pointer-events:none;z-index:1;background:radial-gradient(ellipse 70% 100% at 50% 100%,rgba(180,200,255,0.03) 0%,transparent 70%);animation:floorGlow 6s ease-in-out infinite alternate}
-@keyframes floorGlow{0%{opacity:0.4}100%{opacity:1}}
-/* === MIST === */
-#garden .mist{position:absolute;bottom:5%;left:-10%;right:-10%;height:30%;pointer-events:none;z-index:1;background:radial-gradient(ellipse 55% 100% at 25% 100%,rgba(120,140,180,0.04) 0%,transparent 70%),radial-gradient(ellipse 45% 80% at 70% 100%,rgba(130,160,200,0.03) 0%,transparent 70%);animation:mistDrift 35s ease-in-out infinite alternate}
-@keyframes mistDrift{0%{transform:translateX(-4%) scaleX(1)}100%{transform:translateX(4%) scaleX(1.06)}}
-/* === TREES (BACK LAYER - darker, simpler) === */
-#garden .t-bg{position:absolute;bottom:0;left:0;right:0;height:52%;pointer-events:none;z-index:1}
-#garden .t-bg .t{position:absolute;bottom:0}
-#garden .t-bg .t .cr{width:0;height:0;margin:0 auto;border-left:solid transparent;border-right:solid transparent;border-bottom:solid rgba(4,10,6,0.22)}
-#garden .t-bg .t .tr{width:4px;margin:0 auto;background:rgba(4,10,6,0.18);border-radius:2px}
-#garden .t-bg .t1{left:1%}#garden .t-bg .t1 .tr{height:65px}#garden .t-bg .t1 .cr{border-left-width:24px;border-right-width:24px;border-bottom-width:58px}
-#garden .t-bg .t2{left:7%}#garden .t-bg .t2 .tr{height:45px}#garden .t-bg .t2 .cr{border-left-width:18px;border-right-width:18px;border-bottom-width:40px}
-#garden .t-bg .t3{left:14%}#garden .t-bg .t3 .tr{height:80px}#garden .t-bg .t3 .cr{border-left-width:30px;border-right-width:30px;border-bottom-width:72px}
-#garden .t-bg .t4{left:23%}#garden .t-bg .t4 .tr{height:55px}#garden .t-bg .t4 .cr{border-left-width:20px;border-right-width:20px;border-bottom-width:48px}
-#garden .t-bg .t5{right:2%}#garden .t-bg .t5 .tr{height:55px}#garden .t-bg .t5 .cr{border-left-width:22px;border-right-width:22px;border-bottom-width:50px}
-#garden .t-bg .t6{right:10%}#garden .t-bg .t6 .tr{height:72px}#garden .t-bg .t6 .cr{border-left-width:28px;border-right-width:28px;border-bottom-width:64px}
-#garden .t-bg .t7{right:19%}#garden .t-bg .t7 .tr{height:42px}#garden .t-bg .t7 .cr{border-left-width:16px;border-right-width:16px;border-bottom-width:36px}
-#garden .t-bg .t8{left:46%}#garden .t-bg .t8 .tr{height:60px}#garden .t-bg .t8 .cr{border-left-width:24px;border-right-width:24px;border-bottom-width:52px}
-/* === TREES (FRONT LAYER - slightly brighter, more detail) === */
-#garden .t-fg{position:absolute;bottom:0;left:0;right:0;height:44%;pointer-events:none;z-index:2}
-#garden .t-fg .t{position:absolute;bottom:0}
-#garden .t-fg .t .cr{width:0;height:0;margin:0 auto;border-left:solid transparent;border-right:solid transparent;border-bottom:solid rgba(6,14,8,0.14)}
-#garden .t-fg .t .tr{width:5px;margin:0 auto;background:rgba(6,14,8,0.15);border-radius:2px}
-#garden .t-fg .tf1{left:3%}#garden .t-fg .tf1 .tr{height:50px}#garden .t-fg .tf1 .cr{border-left-width:18px;border-right-width:18px;border-bottom-width:44px}
-#garden .t-fg .tf2{left:16%}#garden .t-fg .tf2 .tr{height:38px}#garden .t-fg .tf2 .cr{border-left-width:14px;border-right-width:14px;border-bottom-width:32px}
-#garden .t-fg .tf3{right:4%}#garden .t-fg .tf3 .tr{height:45px}#garden .t-fg .tf3 .cr{border-left-width:16px;border-right-width:16px;border-bottom-width:38px}
-#garden .t-fg .tf4{right:20%}#garden .t-fg .tf4 .tr{height:32px}#garden .t-fg .tf4 .cr{border-left-width:12px;border-right-width:12px;border-bottom-width:28px}
-/* === CANOPY === */
-#garden .canopy{position:absolute;top:0;left:0;right:0;height:22%;pointer-events:none;z-index:2;background:linear-gradient(180deg,rgba(4,10,6,0.55) 0%,rgba(4,10,6,0.08) 55%,transparent 100%)}
-#garden .canopy .v{position:absolute;top:0;width:50px;height:55%}
-#garden .canopy .v::before{content:'';position:absolute;top:0;left:50%;width:2px;height:100%;background:linear-gradient(to bottom,rgba(16,28,16,0.25),rgba(16,28,16,0.05));transform:translateX(-50%);border-radius:2px}
-#garden .canopy .v::after{content:'';position:absolute;bottom:1px;left:50%;width:20px;height:8px;border-radius:50%;background:rgba(20,38,20,0.1);transform:translateX(-50%);box-shadow:-4px 3px 0 rgba(20,38,20,0.06),4px 2px 0 rgba(20,38,20,0.05)}
-#garden .canopy .v1{left:4%;height:65%}#garden .canopy .v2{left:20%;height:38%}#garden .canopy .v3{right:5%;height:55%}#garden .canopy .v4{right:24%;height:32%}
-/* === FLOOR === */
-#garden .floor{position:absolute;bottom:0;left:0;right:0;height:5%;pointer-events:none;z-index:2}
-#garden .floor .b{position:absolute;bottom:0;width:2px;background:linear-gradient(to top,rgba(28,48,26,0.2),transparent);border-radius:2px;transform-origin:bottom center}
-#garden .floor .b1{left:6%;height:30px;transform:rotate(3deg)}#garden .floor .b2{left:16%;height:22px;transform:rotate(-4deg)}#garden .floor .b3{left:28%;height:26px;transform:rotate(5deg)}#garden .floor .b4{left:42%;height:20px;transform:rotate(-2deg)}#garden .floor .b5{left:55%;height:32px;transform:rotate(4deg)}#garden .floor .b6{left:68%;height:24px;transform:rotate(-3deg)}#garden .floor .b7{left:80%;height:18px;transform:rotate(5deg)}#garden .floor .b8{left:92%;height:28px;transform:rotate(-4deg)}
+#garden .bg{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;background:linear-gradient(180deg,#050812 0%,#0a0c1e 14%,#0e0f28 28%,#12142e 40%,#162012 55%,#121c0e 68%,#0a1008 82%,#060804 100%)}
+#garden .moon{position:absolute;top:3%;right:14%;width:75px;height:75px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(circle at 40% 38%,rgba(252,249,238,0.97),rgba(235,230,245,0.2) 46%,rgba(225,220,240,0.03) 76%);box-shadow:0 0 50px rgba(220,215,240,0.12),0 0 120px rgba(220,215,240,0.04);animation:moonGlow 7s ease-in-out infinite}
+@keyframes moonGlow{0%,100%{box-shadow:0 0 50px rgba(220,215,240,0.12),0 0 120px rgba(220,215,240,0.04)}50%{box-shadow:0 0 80px rgba(220,215,240,0.2),0 0 160px rgba(220,215,240,0.08)}}
+#garden .gl{position:absolute;bottom:0;left:0;right:0;height:30%;pointer-events:none;z-index:1;background:linear-gradient(0deg,rgba(6,10,4,0.5) 0%,transparent 100%)}
+#garden .mist{position:absolute;bottom:4%;left:-15%;right:-15%;height:30%;pointer-events:none;z-index:1;background:radial-gradient(ellipse 50% 100% at 30% 100%,rgba(130,150,180,0.03) 0%,transparent 70%),radial-gradient(ellipse 40% 80% at 70% 100%,rgba(140,170,190,0.025) 0%,transparent 70%);animation:mistDrift 30s ease-in-out infinite alternate}
+@keyframes mistDrift{0%{transform:translateX(-3%)}100%{transform:translateX(3%)}}
+#garden .trees{position:absolute;bottom:0;left:0;right:0;height:50%;pointer-events:none;z-index:1}
+#garden .trees .t{position:absolute;bottom:0}
+#garden .trees .t .cr{width:0;height:0;margin:0 auto;border-left:solid transparent;border-right:solid transparent;border-bottom:solid rgba(5,12,6,0.2)}
+#garden .trees .t .tr{width:4px;margin:0 auto;background:rgba(5,12,6,0.16);border-radius:2px}
+#garden .trees .t1{left:2%}#garden .trees .t1 .tr{height:62px}#garden .trees .t1 .cr{border-left-width:22px;border-right-width:22px;border-bottom-width:55px}
+#garden .trees .t2{left:10%}#garden .trees .t2 .tr{height:42px}#garden .trees .t2 .cr{border-left-width:16px;border-right-width:16px;border-bottom-width:38px}
+#garden .trees .t3{left:20%}#garden .trees .t3 .tr{height:76px}#garden .trees .t3 .cr{border-left-width:28px;border-right-width:28px;border-bottom-width:68px}
+#garden .trees .t4{right:3%}#garden .trees .t4 .tr{height:52px}#garden .trees .t4 .cr{border-left-width:20px;border-right-width:20px;border-bottom-width:48px}
+#garden .trees .t5{right:14%}#garden .trees .t5 .tr{height:66px}#garden .trees .t5 .cr{border-left-width:24px;border-right-width:24px;border-bottom-width:58px}
+#garden .trees .t6{right:25%}#garden .trees .t6 .tr{height:38px}#garden .trees .t6 .cr{border-left-width:14px;border-right-width:14px;border-bottom-width:32px}
+#garden .trees .t7{left:45%}#garden .trees .t7 .tr{height:48px}#garden .trees .t7 .cr{border-left-width:18px;border-right-width:18px;border-bottom-width:42px}
+#garden .canopy{position:absolute;top:0;left:0;right:0;height:18%;pointer-events:none;z-index:1;background:linear-gradient(180deg,rgba(4,10,6,0.5) 0%,transparent 100%)}
 /* === TITLE === */
 #ttl{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(4,7,15,0.94);cursor:pointer;transition:none}
 #ttl.done{opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.7s ease,visibility 0.7s ease}
@@ -129,39 +84,25 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 #card .dt{font-weight:300;font-size:0.65rem;color:rgba(245,240,232,0.25);letter-spacing:0.04em;margin-bottom:0.7rem}
 #card .ms{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size:clamp(0.85rem,2vw,1rem);line-height:1.6;color:rgba(245,240,232,0.7)}
 /* === FINALE === */
-#finale{position:fixed;top:0;left:0;width:100%;height:100%;z-index:15;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity 2.2s ease,visibility 2.2s ease;background:rgba(4,6,12,0.35);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+#finale{position:fixed;top:0;left:0;width:100%;height:100%;z-index:15;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity 2s ease,visibility 2s ease;background:rgba(3,5,10,0.4);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
 #finale.show{opacity:1;visibility:visible}
-#finale .heart-wrap{position:relative;width:min(220px,58vw);height:min(200px,52vw);margin-bottom:1.8rem}
-#finale .heart{position:absolute;top:0;left:50%;transform:translateX(-50%) scale(0);width:100%;height:100%;opacity:0;transition:all 2.2s cubic-bezier(0.34,1.56,0.64,1)}
-#finale.show .heart{transform:translateX(-50%) scale(1);opacity:1}
-#finale .heart::before,#finale .heart::after{content:'';position:absolute;top:0;width:50%;height:85%;border-radius:50% 50% 0 0}
-#finale .heart::before{left:2%;transform:rotate(-30deg);transform-origin:100% 100%;background:radial-gradient(ellipse at 50% 55%,rgba(255,220,150,0.3),rgba(212,165,255,0.15) 48%,transparent 72%)}
-#finale .heart::after{right:2%;transform:rotate(30deg);transform-origin:0% 100%;background:radial-gradient(ellipse at 50% 55%,rgba(255,220,150,0.3),rgba(212,165,255,0.15) 48%,transparent 72%)}
-#finale .heart .inner{position:absolute;top:22%;left:50%;transform:translateX(-50%);width:60%;height:55%;border-radius:50%;background:radial-gradient(circle,rgba(255,220,160,0.08),transparent 70%);animation:heartPulse 4s ease-in-out infinite}
-@keyframes heartPulse{0%,100%{opacity:0.3;transform:translateX(-50%) scale(1)}50%{opacity:0.7;transform:translateX(-50%) scale(1.06)}}
-#finale .heart .hs{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.8rem,4.5vw,2.8rem);color:#f0d78c;opacity:0;transition:opacity 1.5s ease 2.5s;text-shadow:0 0 40px rgba(240,215,140,0.15),0 0 80px rgba(240,215,140,0.05)}
-#finale.show .hs{opacity:1}
-#finale .ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(300px,78vw);height:min(280px,72vw);border-radius:50%;border:1px solid rgba(240,215,140,0.04);pointer-events:none;animation:ringSpin 20s linear infinite}
+#finale .heart{font-size:clamp(4.5rem,12vw,7rem);line-height:1;margin-bottom:1.2rem;opacity:0;transform:scale(0);transition:all 1.8s cubic-bezier(0.34,1.56,0.64,1);filter:drop-shadow(0 0 30px rgba(240,215,140,0.15)) drop-shadow(0 0 60px rgba(240,215,140,0.05));animation:heartColor 4s ease-in-out infinite}
+#finale.show .heart{opacity:1;transform:scale(1)}
+@keyframes heartColor{0%,100%{filter:drop-shadow(0 0 30px rgba(240,215,140,0.15)) drop-shadow(0 0 60px rgba(212,165,255,0.08))}50%{filter:drop-shadow(0 0 50px rgba(240,215,140,0.25)) drop-shadow(0 0 80px rgba(212,165,255,0.12))}}
+#finale .ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(280px,72vw);height:min(260px,66vw);border-radius:50%;border:1px solid rgba(240,215,140,0.05);pointer-events:none;animation:ringSpin 25s linear infinite}
+#finale .ring2{width:min(320px,80vw);height:min(300px,74vw);border:1px solid rgba(240,215,140,0.03);animation-direction:reverse;animation-duration:30s}
 @keyframes ringSpin{0%{transform:translate(-50%,-50%) rotate(0deg)}100%{transform:translate(-50%,-50%) rotate(360deg)}}
-#finale .ring2{width:min(340px,85vw);height:min(320px,78vw);border:1px solid rgba(240,215,140,0.02);animation-direction:reverse;animation-duration:25s}
-/* === FINALE TEXT === */
-#finale .fm{text-align:center;opacity:0;transition:opacity 1.5s ease 3.2s;max-width:460px;padding:0 1rem}
+#finale .fm{text-align:center;opacity:0;transition:opacity 1.5s ease 2.5s;max-width:440px;padding:0.6rem 1rem;background:rgba(3,5,10,0.35);border-radius:12px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 #finale.show .fm{opacity:1}
-#finale .fm .prelude{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(0.85rem,2.2vw,1.1rem);color:rgba(245,240,232,0.5);line-height:1.7;margin-bottom:0.8rem}
-#finale .fm .prelude span{opacity:0;animation:wordFade 0.8s ease forwards}
-#finale .fm .prelude .w1{animation-delay:3.5s}#finale .fm .prelude .w2{animation-delay:3.8s}#finale .fm .prelude .w3{animation-delay:4.1s}#finale .fm .prelude .w4{animation-delay:4.4s}
-#finale .fm .prelude .w5{animation-delay:4.7s}#finale .fm .prelude .w6{animation-delay:5s}#finale .fm .prelude .w7{animation-delay:5.3s}#finale .fm .prelude .w8{animation-delay:5.6s}
-#finale .fm .prelude .w9{animation-delay:5.9s}#finale .fm .prelude .w10{animation-delay:6.2s}
-@keyframes wordFade{0%{opacity:0}100%{opacity:1}}
-#finale .fm .closer{margin-top:1rem;font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1rem,2.5vw,1.4rem);background:linear-gradient(135deg,#f0d78c,#e8c4a0,#d4a5ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0;transition:opacity 1.5s ease 6.5s}
-#finale.show .closer{opacity:1}
+#finale .fm p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1rem,2.5vw,1.25rem);color:rgba(245,240,232,0.75);line-height:1.6}
+#finale .fm .sig{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.05rem,2.8vw,1.45rem);background:linear-gradient(135deg,#f0d78c,#e8c4a0,#d4a5ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-top:0.4rem;line-height:1.5}
 /* === FINALE PARTICLES === */
 #finale .parts{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
 #finale .parts .p{position:absolute;width:3px;height:3px;background:rgba(240,215,140,0.5);border-radius:50%;opacity:0;animation:pf var(--dur,6s) ease-in var(--del,0s) infinite}
 #finale .parts .p::after{content:'';position:absolute;top:-6px;left:-6px;width:15px;height:15px;border-radius:50%;background:inherit;filter:blur(4px);opacity:0.5}
 @keyframes pf{0%{transform:translateY(-10px);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateY(100vh);opacity:0}}
-#finale .parts .p1{left:8%;--dur:6s;--del:0.3s}#finale .parts .p2{left:20%;--dur:8s;--del:0.8s}#finale .parts .p3{left:32%;--dur:7s;--del:0s}#finale .parts .p4{left:44%;--dur:6.5s;--del:0.6s}
-#finale .parts .p5{left:56%;--dur:7.5s;--del:1.2s}#finale .parts .p6{left:68%;--dur:6s;--del:0.4s}#finale .parts .p7{left:80%;--dur:8s;--del:0.9s}#finale .parts .p8{left:92%;--dur:7s;--del:0.2s}
+#finale .parts .p1{left:10%;--dur:6s;--del:0.3s}#finale .parts .p2{left:22%;--dur:8s;--del:0.8s}#finale .parts .p3{left:34%;--dur:7s;--del:0s}#finale .parts .p4{left:46%;--dur:6.5s;--del:0.6s}
+#finale .parts .p5{left:58%;--dur:7.5s;--del:1.2s}#finale .parts .p6{left:70%;--dur:6s;--del:0.4s}#finale .parts .p7{left:82%;--dur:8s;--del:0.9s}#finale .parts .p8{left:92%;--dur:7s;--del:0.2s}
 @media(max-width:600px){#card{padding:0.5rem}#card .box{padding:1rem 1.2rem;border-radius:12px}#prg{top:0.5rem;left:0.5rem;font-size:0.5rem}}
 @media(max-height:480px){#card .box{max-height:85vh;padding:0.6rem 1rem}#card .photo{max-height:20vh}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}}
@@ -172,11 +113,8 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 <div id="garden">
   <div class="bg"></div>
   <div class="moon"></div>
-  <div class="beam beam1"></div>
-  <div class="beam beam2"></div>
-  <div class="beam beam3"></div>
-  <div class="canopy"><div class="v v1"></div><div class="v v2"></div><div class="v v3"></div><div class="v v4"></div></div>
-  <div class="t-bg">
+  <div class="canopy"></div>
+  <div class="trees">
     <div class="t t1"><div class="cr"></div><div class="tr"></div></div>
     <div class="t t2"><div class="cr"></div><div class="tr"></div></div>
     <div class="t t3"><div class="cr"></div><div class="tr"></div></div>
@@ -184,19 +122,9 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
     <div class="t t5"><div class="cr"></div><div class="tr"></div></div>
     <div class="t t6"><div class="cr"></div><div class="tr"></div></div>
     <div class="t t7"><div class="cr"></div><div class="tr"></div></div>
-    <div class="t t8"><div class="cr"></div><div class="tr"></div></div>
-  </div>
-  <div class="t-fg">
-    <div class="t tf1"><div class="cr"></div><div class="tr"></div></div>
-    <div class="t tf2"><div class="cr"></div><div class="tr"></div></div>
-    <div class="t tf3"><div class="cr"></div><div class="tr"></div></div>
-    <div class="t tf4"><div class="cr"></div><div class="tr"></div></div>
   </div>
   <div class="gl"></div>
-  <div class="glow-floor"></div>
-  <div class="floor"><div class="b b1"></div><div class="b b2"></div><div class="b b3"></div><div class="b b4"></div><div class="b b5"></div><div class="b b6"></div><div class="b b7"></div><div class="b b8"></div></div>
   <div class="mist"></div>
-  <div class="lights"><div class="l l1"></div><div class="l l2"></div><div class="l l3"></div><div class="l l4"></div><div class="l l5"></div><div class="l l6"></div><div class="l l7"></div><div class="l l8"></div></div>
   <div id="soil"></div>
 </div>
 <div id="ttl" onclick="tapTitle(event)" ontouchstart="tapTitle(event)">
@@ -205,7 +133,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
   <div class="hint">tap anywhere</div>
 </div>
 <div id="hint"><span class="spark">✦</span> tap the earth to plant a seed <span class="spark">✦</span></div>
-<div id="prg"><span id="bloomN">0</span>&thinsp;/&thinsp;<span id="totalN">14</span></div>
+<div id="prg"><span id="bloomN">0</span>&thinsp;/&thinsp;<span id="totalN">9</span></div>
 <div id="card">
   <div class="box">
     <button class="close" id="cardX">&#10005;</button>
@@ -217,18 +145,13 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
   </div>
 </div>
 <div id="finale">
-  <div class="heart-wrap">
-    <div class="heart"><div class="inner"></div><div class="hs">&hearts;</div></div>
-    <div class="ring"></div>
-    <div class="ring ring2"></div>
-  </div>
+  <div class="heart">&hearts;</div>
+  <div class="ring"></div>
+  <div class="ring ring2"></div>
   <div class="parts"><div class="p p1"></div><div class="p p2"></div><div class="p p3"></div><div class="p p4"></div><div class="p p5"></div><div class="p p6"></div><div class="p p7"></div><div class="p p8"></div></div>
   <div class="fm">
-    <div class="prelude">
-      <span class="w1">Every</span> <span class="w2">flower</span> <span class="w3">in</span> <span class="w4">this</span> <span class="w5">garden</span><br>
-      <span class="w6">holds</span> <span class="w7">a</span> <span class="w8">piece</span> <span class="w9">of</span> <span class="w10">my</span> <span class="w11">heart</span>
-    </div>
-    <div class="closer">Akiva, you are my everything.<br>Forever yours, &mdash; Shahid</div>
+    <p>Every flower in this garden holds a piece of my heart.</p>
+    <div class="sig">Akiva, you are my everything.<br>Forever yours, &mdash; Shahid</div>
   </div>
 </div>
 <script>
@@ -241,12 +164,7 @@ const FLOWERS = [
   {t:"The Deep Talks",d:"Late nights, honest words",m:"We peeled back the layers. Fears, dreams, the parts of ourselves we don't show everyone. You listened without judgment and shared without hesitation. I found not just you, but a better version of myself.",c:"#c4a0ff",cc:"#ff6b9d",s:1.05,sh:58,g:"rgba(196,160,255,0.3)"},
   {t:"Rainy Days",d:"A cozy memory",m:"The rain came down in sheets, and we didn't care. Wrapped up together, warm and dry, while the world washed itself clean. Sometimes the best days are the ones where nothing happens — except everything that matters.",c:"#4a8ea8",cc:"#c4d8e0",s:.95,sh:55,g:"rgba(74,142,168,0.25)"},
   {t:"Wishes",d:"Dreaming together",m:"We talked about the future like it was a garden we were planning. Where we'd go, what we'd do, who we wanted to become. Every wish we shared felt like planting another seed.",c:"#e8a87c",cc:"#c47a5a",s:.8,sh:50,g:"rgba(232,168,124,0.2)"},
-  {t:"Cozy Nights",d:"Safe and warm",m:"The quiet evenings. Just existing in the same space, comfortable in silence or lost in conversation. Nights when the rest of the world faded away and there was only us.",c:"#a8d5a2",cc:"#6b9e5e",s:.9,sh:52,g:"rgba(168,213,162,0.25)"},
-  {t:"Winter Memories",d:"A quiet, cold moment",m:"The world went still and white, and we held each other against the chill. Your warmth in my arms, the frost on the window, the quiet of a world muffled by snow.",c:"#a0c4e8",cc:"#e8f0f8",s:1,sh:58,g:"rgba(160,196,232,0.2)"},
-  {t:"New Beginnings",d:"A fresh chapter",m:"Change came, and we faced it together. You made the unknown feel less frightening, the future feel more hopeful. Every ending with you felt like the start of something new.",c:"#ff9a8b",cc:"#ffd7c4",s:.95,sh:55,g:"rgba(255,154,139,0.25)"},
-  {t:"Through the Storm",d:"Hard times that made us stronger",m:"It wasn't always easy. There were days the clouds gathered and the rain felt relentless. But we held on. We held each other. And when the storm passed, we were still standing.",c:"#5a4a6a",cc:"#c4a0ff",s:.85,sh:52,g:"rgba(90,74,106,0.3)"},
-  {t:"Building Dreams",d:"Our future, taking shape",m:"Everything we've built together. Every plan, every hope, every quiet moment of believing in us. You've made me want to be the best version of myself.",c:"#ffd700",cc:"#ff6b6b",s:1.15,sh:62,g:"rgba(255,215,0,0.3)"},
-  {t:"Just Because",d:"No reason at all",m:"This one has no special date, no big story. It's just because I was thinking of you. You are loved, completely and without condition. This flower is just because you exist, and that makes the world more beautiful.",c:"#f0d78c",cc:"#d4a5ff",s:1.5,sh:72,g:"rgba(240,215,140,0.35)"}
+  {t:"Forever Us",d:"9 years and counting",m:"This one has no special date, no big story. It's just because I was thinking of you. Nine years, and I still feel the same way I did on day one. You are loved, completely and without condition. This flower is just because you exist, and that makes the world more beautiful.",c:"#f0d78c",cc:"#d4a5ff",s:1.5,sh:72,g:"rgba(240,215,140,0.35)"}
 ];
 const S={started:false,next:0,bloomed:0,planting:false,finale:false,audio:null,aOk:false,aPlay:false};
 const cv=document.getElementById('c'),ctx=cv.getContext('2d');
@@ -295,7 +213,7 @@ function getPos(){
 function makeFlower(data,i,x,y){
   const el=document.createElement('div');
   el.className='flower seed';
-  const sh=data.sh||55,sz=(data.s||1)*48,big=i===13;
+  const sh=data.sh||55,sz=(data.s||1)*48,big=i===8;
   const headSize=big?64:48,headOff=big?-6:2;
   el.style.left=(x-headSize/2)+'px';el.style.top=(y+sh+headSize/2)+'px';
   el.innerHTML=`<div class="sprout" style="--sprout-h:${sh*0.4}px"></div>
