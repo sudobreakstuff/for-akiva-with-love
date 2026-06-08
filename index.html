@@ -8,15 +8,15 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:#080b18;font-family:'Inter',sans-serif;color:#f5f0e8;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none}
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-events:none}
 #garden{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;background:linear-gradient(180deg,#080b18 0%,#0d1225 20%,#141e24 38%,#182a17 55%,#142612 68%,#0d1a0d 80%,#1a1810 92%,#14120e 100%);overflow:hidden}
 #garden .moon{position:absolute;top:4%;right:14%;width:70px;height:70px;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 38% 42%,rgba(245,240,232,0.95),rgba(220,215,235,0.4) 50%,rgba(220,215,235,0.08) 80%);box-shadow:0 0 60px rgba(220,215,235,0.12),0 0 140px rgba(220,215,235,0.04);animation:moonGlow 7s ease-in-out infinite}
 @keyframes moonGlow{0%,100%{box-shadow:0 0 60px rgba(220,215,235,0.12),0 0 140px rgba(220,215,235,0.04)}50%{box-shadow:0 0 90px rgba(220,215,235,0.2),0 0 180px rgba(220,215,235,0.08)}}
 #garden .ground-layer{position:absolute;bottom:0;left:0;right:0;height:25%;pointer-events:none;background:linear-gradient(0deg,rgba(10,15,8,0.5) 0%,transparent 100%)}
 .mist{position:absolute;bottom:8%;left:-10%;right:-10%;height:20%;pointer-events:none;background:radial-gradient(ellipse 60% 100% at 20% 100%,rgba(120,140,110,0.05) 0%,transparent 70%),radial-gradient(ellipse 50% 80% at 75% 100%,rgba(100,130,120,0.04) 0%,transparent 70%);animation:mistDrift 25s ease-in-out infinite alternate}
 @keyframes mistDrift{0%{transform:translateX(-2%) scaleX(1)}100%{transform:translateX(2%) scaleX(1.05)}}
-#ttl{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(8,11,24,0.92);cursor:pointer}
-#ttl.done{opacity:0;visibility:hidden;pointer-events:none}
+#ttl{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(8,11,24,0.92);cursor:pointer;transition:none}
+#ttl.done{opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.5s ease,visibility 0.5s ease}
 #ttl.hide{opacity:0;visibility:hidden;pointer-events:none}
 #ttl h1{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(2rem,7vw,4rem);text-align:center;line-height:1.25;color:#f5f0e8;letter-spacing:0.04em}
 #ttl h1 .nm{display:block;font-style:italic;margin-top:0.1em;background:linear-gradient(135deg,#f0d78c,#e8c4a0,#d4a5ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -33,10 +33,10 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-even
 #prg .n{color:rgba(245,240,232,0.5);font-weight:400}
 /* === FLOWERS === */
 .flower{position:absolute;z-index:5;pointer-events:auto;width:0;height:0}
-.flower .sprout{position:absolute;bottom:0;left:-2px;width:4px;height:0;background:linear-gradient(to top,#3a6a30,#6b9e5e);border-radius:2px;transform-origin:bottom center}
+.flower .sprout{position:absolute;bottom:0;left:-3px;width:5px;height:0;background:linear-gradient(to top,#3a6a30,#7ec87e);border-radius:2px;transform-origin:bottom center;box-shadow:0 0 8px rgba(126,200,126,0.3)}
 .flower.seed .sprout{animation:sproutUp 0.7s ease-out forwards}
 @keyframes sproutUp{0%{height:0}100%{height:var(--sprout-h,35px)}}
-.flower .sprout::before{content:'';position:absolute;top:-2px;left:-5px;width:14px;height:9px;background:#6b9e5e;border-radius:50%;box-shadow:0 0 10px rgba(107,158,94,0.2);transform:scale(0)}
+.flower .sprout::before{content:'';position:absolute;top:-2px;left:-5px;width:14px;height:9px;background:#7ec87e;border-radius:50%;box-shadow:0 0 16px rgba(126,200,126,0.5);transform:scale(0)}
 .flower.seed .sprout::before{animation:leafPop 0.6s ease-out 0.2s forwards}
 @keyframes leafPop{0%{transform:scale(0)}100%{transform:scale(1)}}
 .flower .stem{position:absolute;bottom:0;left:-1px;width:3px;height:var(--stem-h,55px);background:linear-gradient(to top,#3a6a30,#5a8a4e);border-radius:2px;transform-origin:bottom center;opacity:0;will-change:transform}
@@ -299,7 +299,8 @@ function tapTitle(e){
   startAudio();
   if(S.bloomed===0){
     S.planting=true;
-    brst(W/2+(Math.random()-0.5)*30,H/2+(Math.random()-0.5)*30,'#f0d78c',22);
+    brst(W/2+(Math.random()-0.5)*40,H/2+(Math.random()-0.5)*40,'#f0d78c',40);
+    setTimeout(()=>brst(W/2+(Math.random()-0.5)*20,H/2+(Math.random()-0.5)*20,'#f0d78c',20),300);
     makeFlower(FLOWERS[0],0,W/2,H/2);
   }
 }
