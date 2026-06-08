@@ -81,6 +81,17 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 .flower .head::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;background:inherit;filter:blur(10px);opacity:0.4;z-index:-1}
 .flower .head::after{content:'';position:absolute;top:50%;left:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--cc,#f5f0e8);z-index:2;box-shadow:0 0 8px rgba(255,255,255,0.25)}
 .flower .head.hg::after{width:18px;height:18px;margin:-9px 0 0 -9px}
+/* === ROSE === */
+.flower.rose .stem{width:5px;background:linear-gradient(to top,#1a3a18,#3a6a30);box-shadow:0 0 15px rgba(58,106,48,0.15)}
+.flower.rose .stem::before{left:-3px;width:14px;height:8px;background:#3a6a30}
+.flower.rose .stem::after{right:-3px;width:12px;height:6px;background:#2a5a24}
+.flower.rose .sprout{width:6px;box-shadow:0 0 12px rgba(126,200,126,0.2)}
+.flower .head.rose{width:120px;height:120px;left:-36px;bottom:calc(var(--stem-h,120px));border-radius:50% 48% 52% 50% / 55% 52% 48% 45%;box-shadow:0 0 60px 15px rgba(255,215,140,0.12),0 0 120px 40px rgba(255,215,140,0.04)}
+.flower.rose-bud .head.rose{opacity:1;transform:scale(.3) rotate(-8deg);animation:roseReveal 3.5s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes roseReveal{0%{opacity:0;transform:scale(.15) rotate(-12deg)}30%{opacity:1;transform:scale(.5) rotate(-5deg)}70%{opacity:1;transform:scale(1.08) rotate(1deg)}100%{opacity:1;transform:scale(1) rotate(0deg)}}
+.flower .head.rose::after{width:24px;height:24px;margin:-12px 0 0 -12px;background:radial-gradient(circle,#fff 0%,#f5e6d0 60%,transparent 100%);box-shadow:0 0 20px rgba(255,255,255,0.2)}
+.flower.rose .tap-hint{bottom:calc(var(--stem-h,120px) + 130px);width:80px;left:-14px;font-size:.9rem}
+.flower.rose-bloom .tap-hint{opacity:1;animation:hintFloat 2.5s ease-in-out infinite}
 /* === TAP HINT === */
 .flower .tap-hint{position:absolute;bottom:calc(var(--stem-h,55px) + 56px);width:52px;left:-2px;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.7rem;color:rgba(245,240,232,0.3);pointer-events:none;opacity:0;transition:opacity 0.8s ease;letter-spacing:0.06em}
 .flower .tap-hint.hg{bottom:calc(var(--stem-h,70px) + 72px);width:68px;left:-2px;font-size:0.8rem}
@@ -191,7 +202,7 @@ const FLOWERS = [
   {t:"The Deep Talks",d:"Late nights, honest words",m:"We peeled back the layers. Fears, dreams, the parts of ourselves we don't show everyone. You listened without judgment and shared without hesitation. I found not just you, but a better version of myself.",c:"#c4a0ff",cc:"#ff6b9d",s:1.05,sh:58,g:"rgba(196,160,255,0.3)"},
   {t:"Rainy Days",d:"A cozy memory",m:"The rain came down in sheets, and we didn't care. Wrapped up together, warm and dry, while the world washed itself clean. Sometimes the best days are the ones where nothing happens — except everything that matters.",c:"#4a8ea8",cc:"#c4d8e0",s:.95,sh:55,g:"rgba(74,142,168,0.25)"},
   {t:"Wishes",d:"Dreaming together",m:"We talked about the future like it was a garden we were planning. Where we'd go, what we'd do, who we wanted to become. Every wish we shared felt like planting another seed.",c:"#e8a87c",cc:"#c47a5a",s:.8,sh:50,g:"rgba(232,168,124,0.2)"},
-  {t:"Forever Us",d:"9 years and counting",m:"This one has no special date, no big story. It's just because I was thinking of you. Nine years, and I still feel the same way I did on day one. You are loved, completely and without condition. This flower is just because you exist, and that makes the world more beautiful.",c:"#f0d78c",cc:"#d4a5ff",s:1.5,sh:72,g:"rgba(240,215,140,0.35)"}
+  {t:"Forever Us",d:"9 years and counting",m:"This one has no special date, no big story. It's just because I was thinking of you. Nine years, and I still feel the same way I did on day one. You are loved, completely and without condition. This flower is just because you exist, and that makes the world more beautiful.",c:"#fff8f0",cc:"#fff",s:2.5,sh:120,g:"rgba(255,215,140,0.15)",rose:true}
 ];
 const S={started:false,next:0,bloomed:0,planting:false,finale:false,audio:null,aOk:false,aPlay:false,soundOn:true};
 const cv=document.getElementById('c'),ctx=cv.getContext('2d');
@@ -241,13 +252,18 @@ setInterval(()=>{if(S.started&&Math.random()<0.4)spawnShoot()},3500);
 setInterval(()=>{if(S.started)spawnPetal()},2800);
 setInterval(()=>{if(S.started)spawnHeart()},2000);
 setInterval(()=>{if(S.started)spawnMDust()},150);
-function makeHead(c,cc,g,sz,big){
+function makeHead(c,cc,g){
   const el=document.createElement('div');el.className='head';
-  if(big)el.classList.add('hg');
   el.style.background=`radial-gradient(circle at 50% 50%,${cc} 7px,transparent 9px),conic-gradient(from 0deg,${c} 0deg 48deg,transparent 48deg 60deg,${c} 60deg 108deg,transparent 108deg 120deg,${c} 120deg 168deg,transparent 168deg 180deg,${c} 180deg 228deg,transparent 228deg 240deg,${c} 240deg 288deg,transparent 288deg 300deg,${c} 300deg 348deg,transparent 348deg 360deg)`;
-  el.style.setProperty('--g',g||'rgba(255,215,0,0.15)');
   el.style.setProperty('--cc',cc);
   el.style.boxShadow=`0 0 30px 4px ${g||'rgba(255,215,0,0.15)'}`;
+  return el
+}
+function makeRose(){
+  const el=document.createElement('div');el.className='head rose';
+  let s='';const n=24,st=360/n,w=8;
+  for(let i=0;i<n;i++){const a=i*st,c=i%3===0?'#fff8f0':i%3===1?'#f5ece0':'#faf0e5';s+=`${c} ${a}deg ${a+w}deg,transparent ${a+w}deg ${a+st}deg${i<n-1?',':''}`}
+  el.style.background=`radial-gradient(circle at 50% 50%,#fff 10px,#f5e6d0 14px,transparent 16px),conic-gradient(from 0deg,${s})`;
   return el
 }
 const soil=document.getElementById('soil');
@@ -268,26 +284,25 @@ function getPos(){
 }
 function makeFlower(data,i,x,y){
   const el=document.createElement('div');
-  el.className='flower seed';
-  const sh=data.sh||55,sz=(data.s||1)*48,big=i===8;
-  const headSize=big?64:48,headOff=big?-6:2;
+  const rose=data.rose,sh=rose?120:(data.sh||55),headSize=rose?120:48,big=!rose&&i===8;
+  el.className='flower seed'+(rose?' rose':'');
   el.style.left=(x-headSize/2)+'px';el.style.top=(y+sh+headSize/2)+'px';
-  el.innerHTML=`<div class="sprout" style="--sprout-h:${sh*0.4}px"></div>
+  el.innerHTML=`<div class="sprout" style="--sprout-h:${rose?60:sh*0.4}px"></div>
 <div class="stem" style="--stem-h:${sh}px;--sway:${(2.8+Math.random()*1.4).toFixed(2)}s"></div>
-<div class="tap-hint${big?' hg':''}">✦ tap me ✦</div>`;
-  const head=makeHead(data.c,data.cc,data.g,sz,big);
+<div class="tap-hint${rose?'':' hg'}">${rose?'✦ touch me ✦':'✦ tap me ✦'}</div>`;
+  const head=rose?makeRose():makeHead(data.c,data.cc,data.g);
   el.appendChild(head);
   garden.appendChild(el);
   flowers.push({el,index:i,data,state:'seed',x,y});
+  const t=rose?3500:900;
   setTimeout(()=>{
-    el.classList.remove('seed');el.classList.add('bloom');
-    brst(x+headSize/2+2,y-sh*0.3,data.g||'#f0d78c',16);
-    if(big)setTimeout(()=>brst(x+headSize/2+2,y-sh*0.3,'#ffd700',30),300);
+    el.classList.remove('seed');
+    if(rose){el.classList.add('rose-bud');setTimeout(()=>{el.classList.remove('rose-bud');el.classList.add('rose-bloom');brst(x+headSize/2+2,y-sh*0.3,'rgba(255,215,140,0.5)',24);setTimeout(()=>brst(x+headSize/2+2,y-sh*0.3,'#fff8f0',30),800)},2800)}else{el.classList.add('bloom');brst(x+headSize/2+2,y-sh*0.3,data.g||'#f0d78c',16);if(big)setTimeout(()=>brst(x+headSize/2+2,y-sh*0.3,'#ffd700',30),300)}
     S.next=i+1;S.planting=false;
     if(S.next<FLOWERS.length)hint.classList.add('show');
     el.addEventListener('click',e=>{e.stopPropagation();openCard(i)});
     el.addEventListener('touchend',e=>{e.stopPropagation();openCard(i)});
-  },900);
+  },t);
 }
 function plant(x,y){
   if(!S.started||S.planting||S.next>=FLOWERS.length){if(!S.finale&&S.bloomed>=FLOWERS.length)showFinale();return}
