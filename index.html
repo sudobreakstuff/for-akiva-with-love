@@ -9,12 +9,35 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:#080b18;font-family:'Inter',sans-serif;color:#f5f0e8;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-events:none}
-#garden{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;background:linear-gradient(180deg,#080b18 0%,#0d1225 20%,#141e24 38%,#182a17 55%,#142612 68%,#0d1a0d 80%,#1a1810 92%,#14120e 100%);overflow:hidden}
-#garden .moon{position:absolute;top:4%;right:14%;width:70px;height:70px;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 38% 42%,rgba(245,240,232,0.95),rgba(220,215,235,0.4) 50%,rgba(220,215,235,0.08) 80%);box-shadow:0 0 60px rgba(220,215,235,0.12),0 0 140px rgba(220,215,235,0.04);animation:moonGlow 7s ease-in-out infinite}
+#garden{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;overflow:hidden}
+#garden .bg{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;background:linear-gradient(180deg,#080b18 0%,#0d1225 18%,#141e24 35%,#1a2a1a 52%,#142612 65%,#0d1a0d 78%,#1a1810 90%,#14120e 100%)}
+#garden .moon{position:absolute;top:4%;right:14%;width:70px;height:70px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(circle at 38% 42%,rgba(245,240,232,0.95),rgba(220,215,235,0.4) 50%,rgba(220,215,235,0.08) 80%);box-shadow:0 0 60px rgba(220,215,235,0.12),0 0 140px rgba(220,215,235,0.04);animation:moonGlow 7s ease-in-out infinite}
 @keyframes moonGlow{0%,100%{box-shadow:0 0 60px rgba(220,215,235,0.12),0 0 140px rgba(220,215,235,0.04)}50%{box-shadow:0 0 90px rgba(220,215,235,0.2),0 0 180px rgba(220,215,235,0.08)}}
-#garden .ground-layer{position:absolute;bottom:0;left:0;right:0;height:25%;pointer-events:none;background:linear-gradient(0deg,rgba(10,15,8,0.5) 0%,transparent 100%)}
-.mist{position:absolute;bottom:8%;left:-10%;right:-10%;height:20%;pointer-events:none;background:radial-gradient(ellipse 60% 100% at 20% 100%,rgba(120,140,110,0.05) 0%,transparent 70%),radial-gradient(ellipse 50% 80% at 75% 100%,rgba(100,130,120,0.04) 0%,transparent 70%);animation:mistDrift 25s ease-in-out infinite alternate}
+#garden .ground-layer{position:absolute;bottom:0;left:0;right:0;height:25%;pointer-events:none;z-index:1;background:linear-gradient(0deg,rgba(10,15,8,0.5) 0%,transparent 100%)}
+.mist{position:absolute;bottom:8%;left:-10%;right:-10%;height:20%;pointer-events:none;z-index:1;background:radial-gradient(ellipse 60% 100% at 20% 100%,rgba(120,140,110,0.05) 0%,transparent 70%),radial-gradient(ellipse 50% 80% at 75% 100%,rgba(100,130,120,0.04) 0%,transparent 70%);animation:mistDrift 25s ease-in-out infinite alternate}
 @keyframes mistDrift{0%{transform:translateX(-2%) scaleX(1)}100%{transform:translateX(2%) scaleX(1.05)}}
+/* === FOREST SILHOUETTES === */
+#garden .forest{position:absolute;bottom:0;left:0;right:0;height:45%;pointer-events:none;z-index:1}
+#garden .forest .tree{position:absolute;bottom:0}
+#garden .forest .tree .tr{width:5px;margin:0 auto;background:rgba(8,18,10,0.3);border-radius:2px}
+#garden .forest .tree .cr{width:0;height:0;margin:0 auto;border-left:solid transparent;border-right:solid transparent;border-bottom:solid rgba(8,18,10,0.25)}
+#garden .forest .t1{left:2%}#garden .forest .t1 .tr{height:55px}#garden .forest .t1 .cr{border-left-width:18px;border-right-width:18px;border-bottom-width:45px;border-bottom-color:rgba(8,18,10,0.22)}
+#garden .forest .t2{left:8%}#garden .forest .t2 .tr{height:38px}#garden .forest .t2 .cr{border-left-width:14px;border-right-width:14px;border-bottom-width:32px;border-bottom-color:rgba(8,18,10,0.2)}
+#garden .forest .t3{left:16%}#garden .forest .t3 .tr{height:70px}#garden .forest .t3 .cr{border-left-width:24px;border-right-width:24px;border-bottom-width:60px;border-bottom-color:rgba(8,18,10,0.2)}
+#garden .forest .t4{right:3%}#garden .forest .t4 .tr{height:48px}#garden .forest .t4 .cr{border-left-width:16px;border-right-width:16px;border-bottom-width:40px;border-bottom-color:rgba(8,18,10,0.22)}
+#garden .forest .t5{right:11%}#garden .forest .t5 .tr{height:62px}#garden .forest .t5 .cr{border-left-width:22px;border-right-width:22px;border-bottom-width:52px;border-bottom-color:rgba(8,18,10,0.2)}
+#garden .forest .t6{right:18%}#garden .forest .t6 .tr{height:35px}#garden .forest .t6 .cr{border-left-width:12px;border-right-width:12px;border-bottom-width:28px;border-bottom-color:rgba(8,18,10,0.2)}
+#garden .forest .t7{left:48%}#garden .forest .t7 .tr{height:50px}#garden .forest .t7 .cr{border-left-width:20px;border-right-width:20px;border-bottom-width:48px;border-bottom-color:rgba(8,18,10,0.18)}
+/* === OVERHEAD CANOPY === */
+#garden .canopy{position:absolute;top:0;left:0;right:0;height:18%;pointer-events:none;z-index:1;background:linear-gradient(180deg,rgba(8,14,10,0.5) 0%,transparent 100%)}
+#garden .canopy .vine{position:absolute;top:0;width:60px;height:40%}
+#garden .canopy .vine::before{content:'';position:absolute;top:0;left:50%;width:3px;height:100%;background:linear-gradient(to bottom,rgba(20,36,22,0.35),rgba(20,36,22,0.1));transform:translateX(-50%);border-radius:2px}
+#garden .canopy .vine::after{content:'';position:absolute;bottom:4px;left:50%;width:20px;height:10px;border-radius:50%;background:rgba(30,50,30,0.15);transform:translateX(-50%);box-shadow:-4px 3px 0 rgba(30,50,30,0.1),4px 2px 0 rgba(30,50,30,0.08)}
+#garden .canopy .v1{left:5%;height:55%}#garden .canopy .v2{left:20%;height:35%}#garden .canopy .v3{right:8%;height:45%}#garden .canopy .v4{right:25%;height:30%}
+/* === FOREST FLOOR DETAILS === */
+#garden .floor{position:absolute;bottom:0;left:0;right:0;height:8%;pointer-events:none;z-index:1}
+#garden .floor .blade{position:absolute;bottom:0;width:3px;background:linear-gradient(to top,rgba(30,55,30,0.2),transparent);border-radius:2px;transform-origin:bottom center}
+#garden .floor .b1{left:10%;height:25px;transform:rotate(4deg)}#garden .floor .b2{left:22%;height:18px;transform:rotate(-3deg)}#garden .floor .b3{left:35%;height:22px;transform:rotate(6deg)}#garden .floor .b4{left:55%;height:20px;transform:rotate(-5deg)}#garden .floor .b5{left:68%;height:26px;transform:rotate(3deg)}#garden .floor .b6{left:80%;height:15px;transform:rotate(-4deg)}#garden .floor .b7{left:90%;height:21px;transform:rotate(5deg)}
 #ttl{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(8,11,24,0.92);cursor:pointer;transition:none}
 #ttl.done{opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.5s ease,visibility 0.5s ease}
 #ttl.hide{opacity:0;visibility:hidden;pointer-events:none}
@@ -51,6 +74,9 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 .flower .flower-wrap .glow-el{position:absolute;top:50%;left:50%;width:var(--glow-w,120px);height:var(--glow-h,120px);margin:-60px 0 0 -60px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity 1.2s ease}
 .flower.bloom .flower-wrap .glow-el{opacity:1;animation:glowPulse 4s ease-in-out infinite}
 @keyframes glowPulse{0%,100%{opacity:0.12;transform:scale(1)}50%{opacity:0.3;transform:scale(1.15)}}
+.flower .tap-hint{position:absolute;bottom:calc(var(--stem-h,55px) + var(--fh,52px) + 8px);left:50%;transform:translateX(-50%);white-space:nowrap;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.6rem;color:rgba(245,240,232,0.25);pointer-events:none;opacity:0;transition:opacity 0.8s ease;letter-spacing:0.08em}
+.flower.bloom .tap-hint{opacity:1;animation:hintFloat 2.5s ease-in-out infinite}
+@keyframes hintFloat{0%,100%{transform:translateX(-50%) translateY(0);opacity:0.3}50%{transform:translateX(-50%) translateY(-5px);opacity:0.85}}
 /* === CARD === */
 #card{position:fixed;top:0;left:0;width:100%;height:100%;z-index:20;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity 0.4s ease,visibility 0.4s ease;background:rgba(5,8,15,0.6);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:1.2rem}
 #card.show{opacity:1;visibility:visible}
@@ -93,8 +119,23 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 <body>
 <canvas id="c"></canvas>
 <div id="garden">
+  <div class="bg"></div>
   <div class="moon"></div>
+  <div class="canopy"><div class="vine v1"></div><div class="vine v2"></div><div class="vine v3"></div><div class="vine v4"></div></div>
+  <div class="forest">
+    <div class="tree t1"><div class="cr"></div><div class="tr"></div></div>
+    <div class="tree t2"><div class="cr"></div><div class="tr"></div></div>
+    <div class="tree t3"><div class="cr"></div><div class="tr"></div></div>
+    <div class="tree t4"><div class="cr"></div><div class="tr"></div></div>
+    <div class="tree t5"><div class="cr"></div><div class="tr"></div></div>
+    <div class="tree t6"><div class="cr"></div><div class="tr"></div></div>
+    <div class="tree t7"><div class="cr"></div><div class="tr"></div></div>
+  </div>
   <div class="ground-layer"></div>
+  <div class="floor">
+    <div class="blade b1"></div><div class="blade b2"></div><div class="blade b3"></div>
+    <div class="blade b4"></div><div class="blade b5"></div><div class="blade b6"></div><div class="blade b7"></div>
+  </div>
   <div class="mist"></div>
   <div id="soil"></div>
 </div>
@@ -235,13 +276,15 @@ function getPos(){
 function makeFlower(data,i,x,y){
   const el=document.createElement('div');
   el.className='flower seed';
-  el.style.left=(x-26)+'px';el.style.top=(y-26)+'px';
   const sh=data.sh||55,sz=(data.s||1)*52,gs=sz*2.6;
+  // Position so flower-wrap center is at (x,y) — the tap point
+  el.style.left=(x-26)+'px';el.style.top=(y+sh+26)+'px';
   el.innerHTML=`<div class="sprout" style="--sprout-h:${sh*0.5}px"></div>
 <div class="stem" style="--stem-h:${sh}px;--sway:${(2.8+Math.random()*1.4).toFixed(2)}s"></div>
 <div class="flower-wrap" style="--stem-h:${sh}px;--fw:${sz}px;--fh:${sz}px;--glow-w:${gs}px;--glow-h:${gs}px">
   <div class="glow-el" style="background:radial-gradient(circle,${data.g||'rgba(255,215,0,0.15)'} 0%,transparent 70%)"></div>
-</div>`;
+</div>
+<div class="tap-hint">✦ tap me ✦</div>`;
   const wrap=el.querySelector('.flower-wrap');
   const svg=makeFlowerSVG(data,sz);
   wrap.insertBefore(svg,wrap.firstChild);
@@ -260,10 +303,9 @@ function plant(x,y){
   if(!S.started||S.planting||S.next>=FLOWERS.length){if(!S.finale&&S.bloomed>=FLOWERS.length)showFinale();return}
   S.planting=true;
   const data=FLOWERS[S.next];
-  const pos=getPos();
   hint.classList.remove('show');
   brst(x+(Math.random()-0.5)*20,y+(Math.random()-0.5)*20,data.g||'#f0d78c',20);
-  makeFlower(data,S.next,pos.x,pos.y);
+  makeFlower(data,S.next,x,y);
 }
 function openCard(i){
   const data=FLOWERS[i];if(!data)return;
@@ -306,7 +348,7 @@ function tapTitle(e){
 }
 function interact(x,y){
   if(!S.started){tapTitle();return}
-  if(S.planting){brst(x+(Math.random()-0.5)*12,y+(Math.random()-0.5)*12,'rgba(240,215,140,0.3)',6);return}
+  if(S.planting){brst(x+(Math.random()-0.5)*16,y+(Math.random()-0.5)*16,'rgba(240,215,140,0.7)',14);return}
   plant(x,y)
 }
 soil.addEventListener('click',e=>{const r=garden.getBoundingClientRect();interact(e.clientX-r.left,e.clientY-r.top)});
@@ -324,11 +366,12 @@ function restore(){
     const d=FLOWERS[i],pos=getPos();
     const el=document.createElement('div');
     el.className='flower bloom';const sh=d.sh||55,sz=(d.s||1)*52,gs=sz*2.6;
-    el.style.left=(pos.x-26)+'px';el.style.top=(pos.y-26)+'px';
+    el.style.left=(pos.x-26)+'px';el.style.top=(pos.y+sh+26)+'px';
     el.innerHTML=`<div class="stem" style="--stem-h:${sh}px;--sway:${(2.8+Math.random()*1.4).toFixed(2)}s"></div>
 <div class="flower-wrap" style="--stem-h:${sh}px;--fw:${sz}px;--fh:${sz}px;--glow-w:${gs}px;--glow-h:${gs}px">
   <div class="glow-el" style="background:radial-gradient(circle,${d.g||'rgba(255,215,0,0.15)'} 0%,transparent 70%)"></div>
-</div>`;
+</div>
+<div class="tap-hint">✦ tap me ✦</div>`;
     const wrap=el.querySelector('.flower-wrap');
     const svg=makeFlowerSVG(d,sz);
     wrap.insertBefore(svg,wrap.firstChild);
