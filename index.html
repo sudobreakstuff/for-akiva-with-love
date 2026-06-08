@@ -10,16 +10,18 @@
 html,body{width:100%;height:100%;overflow:hidden;background:#050812;font-family:'Inter',sans-serif;color:#f5f0e8;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-events:none}
 #garden{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;overflow:hidden}
-#garden .bg{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;background:linear-gradient(180deg,#050812 0%,#0a0c1e 14%,#0e0f28 28%,#12142e 40%,#162012 55%,#121c0e 68%,#0a1008 82%,#060804 100%)}
-#garden .moon{position:absolute;top:3%;right:14%;width:75px;height:75px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(circle at 40% 38%,rgba(252,249,238,0.97),rgba(235,230,245,0.2) 46%,rgba(225,220,240,0.03) 76%);box-shadow:0 0 50px rgba(220,215,240,0.12),0 0 120px rgba(220,215,240,0.04);animation:moonGlow 7s ease-in-out infinite}
-@keyframes moonGlow{0%,100%{box-shadow:0 0 50px rgba(220,215,240,0.12),0 0 120px rgba(220,215,240,0.04)}50%{box-shadow:0 0 80px rgba(220,215,240,0.2),0 0 160px rgba(220,215,240,0.08)}}
-#garden .gl{position:absolute;bottom:0;left:0;right:0;height:30%;pointer-events:none;z-index:1;background:linear-gradient(0deg,rgba(6,10,4,0.5) 0%,transparent 100%)}
-#garden .mist{position:absolute;bottom:4%;left:-15%;right:-15%;height:30%;pointer-events:none;z-index:1;background:radial-gradient(ellipse 50% 100% at 30% 100%,rgba(130,150,180,0.03) 0%,transparent 70%),radial-gradient(ellipse 40% 80% at 70% 100%,rgba(140,170,190,0.025) 0%,transparent 70%);animation:mistDrift 30s ease-in-out infinite alternate}
-@keyframes mistDrift{0%{transform:translateX(-3%)}100%{transform:translateX(3%)}}
-#garden .trees{position:absolute;bottom:0;left:0;right:0;height:50%;pointer-events:none;z-index:1}
+#garden .bg{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;background:linear-gradient(180deg,#050812 0%,#0a0b20 12%,#100e2e 25%,#1a1238 35%,#1e1830 45%,#1a2218 58%,#142010 70%,#0c1408 85%,#060804 100%)}
+#garden .moon{position:absolute;top:3%;right:12%;width:85px;height:85px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(circle at 42% 40%,rgba(255,248,235,0.98),rgba(255,240,220,0.18) 44%,rgba(240,225,245,0.03) 74%);box-shadow:0 0 60px rgba(255,240,220,0.12),0 0 120px rgba(255,240,220,0.05),0 0 200px rgba(212,165,255,0.03);animation:moonGlow 7s ease-in-out infinite}
+@keyframes moonGlow{0%,100%{box-shadow:0 0 60px rgba(255,240,220,0.12),0 0 120px rgba(255,240,220,0.05),0 0 200px rgba(212,165,255,0.03)}50%{box-shadow:0 0 90px rgba(255,240,220,0.22),0 0 160px rgba(255,240,220,0.1),0 0 250px rgba(212,165,255,0.06)}}
+#garden .ground-glow{position:absolute;bottom:0;left:0;right:0;height:40%;pointer-events:none;z-index:1;background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(200,180,255,0.04) 0%,rgba(180,140,240,0.02) 30%,rgba(100,80,160,0.01) 60%,transparent 100%);animation:groundPulse 6s ease-in-out infinite alternate}
+@keyframes groundPulse{0%{opacity:0.5}100%{opacity:1}}
+#garden .mist{position:absolute;bottom:3%;left:-20%;right:-20%;height:35%;pointer-events:none;z-index:1;background:radial-gradient(ellipse 45% 100% at 25% 100%,rgba(180,160,220,0.035) 0%,transparent 70%),radial-gradient(ellipse 40% 80% at 75% 100%,rgba(150,200,220,0.025) 0%,transparent 70%);animation:mistDrift 35s ease-in-out infinite alternate}
+@keyframes mistDrift{0%{transform:translateX(-5%)}100%{transform:translateX(5%)}}
+/* === TREES === */
+#garden .trees{position:absolute;bottom:0;left:0;right:0;height:48%;pointer-events:none;z-index:1}
 #garden .trees .t{position:absolute;bottom:0}
-#garden .trees .t .cr{width:0;height:0;margin:0 auto;border-left:solid transparent;border-right:solid transparent;border-bottom:solid rgba(5,12,6,0.2)}
-#garden .trees .t .tr{width:4px;margin:0 auto;background:rgba(5,12,6,0.16);border-radius:2px}
+#garden .trees .t .cr{width:0;height:0;margin:0 auto;border-left:solid transparent;border-right:solid transparent;border-bottom:solid rgba(8,10,18,0.22)}
+#garden .trees .t .tr{width:4px;margin:0 auto;background:rgba(8,10,18,0.18);border-radius:2px}
 #garden .trees .t1{left:2%}#garden .trees .t1 .tr{height:62px}#garden .trees .t1 .cr{border-left-width:22px;border-right-width:22px;border-bottom-width:55px}
 #garden .trees .t2{left:10%}#garden .trees .t2 .tr{height:42px}#garden .trees .t2 .cr{border-left-width:16px;border-right-width:16px;border-bottom-width:38px}
 #garden .trees .t3{left:20%}#garden .trees .t3 .tr{height:76px}#garden .trees .t3 .cr{border-left-width:28px;border-right-width:28px;border-bottom-width:68px}
@@ -27,7 +29,41 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 #garden .trees .t5{right:14%}#garden .trees .t5 .tr{height:66px}#garden .trees .t5 .cr{border-left-width:24px;border-right-width:24px;border-bottom-width:58px}
 #garden .trees .t6{right:25%}#garden .trees .t6 .tr{height:38px}#garden .trees .t6 .cr{border-left-width:14px;border-right-width:14px;border-bottom-width:32px}
 #garden .trees .t7{left:45%}#garden .trees .t7 .tr{height:48px}#garden .trees .t7 .cr{border-left-width:18px;border-right-width:18px;border-bottom-width:42px}
-#garden .canopy{position:absolute;top:0;left:0;right:0;height:18%;pointer-events:none;z-index:1;background:linear-gradient(180deg,rgba(4,10,6,0.5) 0%,transparent 100%)}
+#garden .canopy{position:absolute;top:0;left:0;right:0;height:18%;pointer-events:none;z-index:1;background:linear-gradient(180deg,rgba(8,10,18,0.5) 0%,transparent 100%)}
+/* === GLOWING MUSHROOMS === */
+#garden .mush{position:absolute;pointer-events:none;z-index:2}
+#garden .mush .st{width:3px;margin:0 auto;background:rgba(180,200,210,0.12);border-radius:1px}
+#garden .mush .cp{position:relative;width:18px;height:11px;margin:0 auto;border-radius:50% 50% 45% 45%}
+#garden .mush .cp::after{content:'';position:absolute;top:-6px;left:-12px;width:42px;height:24px;border-radius:50%;background:inherit;filter:blur(10px);opacity:0.4;animation:mushGlow 3s ease-in-out infinite alternate}
+@keyframes mushGlow{0%{opacity:0.25}100%{opacity:0.55}}
+#garden .mush .cp .hl{position:absolute;top:2px;left:5px;width:4px;height:3px;border-radius:50%;background:rgba(255,255,255,0.3);transform:rotate(-20deg)}
+#garden .m1{bottom:14%;left:6%;animation:mushBounce 4s ease-in-out infinite}
+#garden .m1 .st{height:14px}#garden .m1 .cp{background:radial-gradient(circle at 40% 30%,#7af0d8,#3ab8a0);width:16px;height:10px;box-shadow:0 0 20px rgba(58,184,160,0.15)}
+#garden .m2{bottom:18%;left:22%;animation:mushBounce 5s ease-in-out infinite 1s}
+#garden .m2 .st{height:10px}#garden .m2 .cp{background:radial-gradient(circle at 40% 30%,#e8aaff,#b060e0);width:22px;height:13px;box-shadow:0 0 25px rgba(176,96,224,0.15)}
+#garden .m3{bottom:12%;right:8%;animation:mushBounce 4.5s ease-in-out infinite 0.5s}
+#garden .m3 .st{height:18px}#garden .m3 .cp{background:radial-gradient(circle at 40% 30%,#ffd78a,#e8a040);width:20px;height:12px;box-shadow:0 0 20px rgba(232,160,64,0.15)}
+#garden .m4{bottom:22%;right:22%;animation:mushBounce 5.5s ease-in-out infinite 2s}
+#garden .m4 .st{height:8px}#garden .m4 .cp{background:radial-gradient(circle at 40% 30%,#ff9eb0,#e05878);width:14px;height:9px;box-shadow:0 0 18px rgba(224,88,120,0.12)}
+#garden .m5{bottom:10%;left:40%;animation:mushBounce 6s ease-in-out infinite 1.5s}
+#garden .m5 .st{height:12px}#garden .m5 .cp{background:radial-gradient(circle at 40% 30%,#a0e0ff,#58a8d0);width:18px;height:11px;box-shadow:0 0 22px rgba(88,168,208,0.12)}
+#garden .m6{bottom:20%;left:60%;animation:mushBounce 3.5s ease-in-out infinite 0.8s}
+#garden .m6 .st{height:9px}#garden .m6 .cp{background:radial-gradient(circle at 40% 30%,#f0c8ff,#b888d8);width:15px;height:9px;box-shadow:0 0 18px rgba(184,136,216,0.12)}
+@keyframes mushBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+/* === FLOATING SPORES === */
+#garden .spores{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;overflow:hidden}
+#garden .spores .s{position:absolute;width:4px;height:4px;border-radius:50%;opacity:0;animation:sporeRise var(--d,8s) ease-in var(--dd,0s) infinite}
+#garden .spores .s::after{content:'';position:absolute;top:-6px;left:-6px;width:16px;height:16px;border-radius:50%;background:inherit;filter:blur(4px);opacity:0.4}
+@keyframes sporeRise{0%{transform:translateY(100vh) scale(0);opacity:0}20%{opacity:var(--o,0.5)}80%{opacity:var(--o,0.5)}100%{transform:translateY(-10vh) scale(1);opacity:0}}
+#garden .spores .s1{left:8%;--d:10s;--dd:0s;--o:0.4;background:rgba(200,180,255,0.5);width:3px;height:3px}
+#garden .spores .s2{left:18%;--d:12s;--dd:2s;--o:0.35;background:rgba(180,230,255,0.4);width:5px;height:5px}
+#garden .spores .s3{left:32%;--d:9s;--dd:4s;--o:0.45;background:rgba(255,220,180,0.4);width:3px;height:3px}
+#garden .spores .s4{left:48%;--d:11s;--dd:1s;--o:0.3;background:rgba(220,200,255,0.4);width:4px;height:4px}
+#garden .spores .s5{left:62%;--d:8s;--dd:5s;--o:0.4;background:rgba(200,240,230,0.4);width:3px;height:3px}
+#garden .spores .s6{left:75%;--d:13s;--dd:3s;--o:0.35;background:rgba(240,200,255,0.4);width:5px;height:5px}
+#garden .spores .s7{left:88%;--d:10s;--dd:6s;--o:0.4;background:rgba(255,230,200,0.4);width:3px;height:3px}
+/* === GROUND LAYER === */
+#garden .gl{position:absolute;bottom:0;left:0;right:0;height:25%;pointer-events:none;z-index:2;background:linear-gradient(0deg,rgba(5,8,5,0.45) 0%,transparent 100%)}
 /* === TITLE === */
 #ttl{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(4,7,15,0.94);cursor:pointer;transition:none}
 #ttl.done{opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.7s ease,visibility 0.7s ease}
@@ -123,8 +159,16 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
     <div class="t t6"><div class="cr"></div><div class="tr"></div></div>
     <div class="t t7"><div class="cr"></div><div class="tr"></div></div>
   </div>
+  <div class="ground-glow"></div>
   <div class="gl"></div>
   <div class="mist"></div>
+  <div class="mush m1"><div class="st"></div><div class="cp"><div class="hl"></div></div></div>
+  <div class="mush m2"><div class="st"></div><div class="cp"><div class="hl"></div></div></div>
+  <div class="mush m3"><div class="st"></div><div class="cp"><div class="hl"></div></div></div>
+  <div class="mush m4"><div class="st"></div><div class="cp"><div class="hl"></div></div></div>
+  <div class="mush m5"><div class="st"></div><div class="cp"><div class="hl"></div></div></div>
+  <div class="mush m6"><div class="st"></div><div class="cp"><div class="hl"></div></div></div>
+  <div class="spores"><div class="s s1"></div><div class="s s2"></div><div class="s s3"></div><div class="s s4"></div><div class="s s5"></div><div class="s s6"></div><div class="s s7"></div></div>
   <div id="soil"></div>
 </div>
 <div id="ttl" onclick="tapTitle(event)" ontouchstart="tapTitle(event)">
