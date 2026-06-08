@@ -30,17 +30,43 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 #garden .trees .t6{right:25%}#garden .trees .t6 .tr{height:38px}#garden .trees .t6 .cr{border-left-width:14px;border-right-width:14px;border-bottom-width:32px}
 #garden .trees .t7{left:45%}#garden .trees .t7 .tr{height:48px}#garden .trees .t7 .cr{border-left-width:18px;border-right-width:18px;border-bottom-width:42px}
 #garden .canopy{position:absolute;top:0;left:0;right:0;height:18%;pointer-events:none;z-index:1;background:linear-gradient(180deg,rgba(8,10,18,0.5) 0%,transparent 100%)}
-/* === GLOWING MUSHROOMS === */
+/* === GLOWING MUSHROOMS (CSS) === */
 #garden .mush{position:absolute;pointer-events:none;z-index:2;animation:mushBounce var(--b,4s) ease-in-out infinite}
-#garden .mush img{display:block;filter:drop-shadow(0 0 18px var(--mg,rgba(58,184,160,0.2)));animation:mushGlow 4s ease-in-out infinite alternate}
-@keyframes mushGlow{0%{filter:drop-shadow(0 0 8px var(--mg,rgba(58,184,160,0.12)))}100%{filter:drop-shadow(0 0 28px var(--mg,rgba(58,184,160,0.4)))}}
 @keyframes mushBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
-#garden .m1{bottom:13%;left:5%;--b:4s;--mg:rgba(58,184,160,0.25)}#garden .m1 img{width:28px;height:auto}
-#garden .m2{bottom:19%;left:20%;--b:5s;--mg:rgba(176,96,224,0.25)}#garden .m2 img{width:34px;height:auto}
-#garden .m3{bottom:11%;right:7%;--b:4.5s;--mg:rgba(232,160,64,0.2)}#garden .m3 img{width:30px;height:auto}
-#garden .m4{bottom:23%;right:20%;--b:5.5s;--mg:rgba(224,88,120,0.2)}#garden .m4 img{width:24px;height:auto}
-#garden .m5{bottom:9%;left:42%;--b:6s;--mg:rgba(88,168,208,0.2)}#garden .m5 img{width:28px;height:auto}
-#garden .m6{bottom:21%;left:58%;--b:3.5s;--mg:rgba(184,136,216,0.2)}#garden .m6 img{width:26px;height:auto}
+#garden .mush .mi{position:relative;display:flex;flex-direction:column;align-items:center}
+#garden .mush .mi .st{position:relative;border-radius:40% 40% 30% 30%/60% 60% 20% 20%;z-index:1}
+#garden .mush .mi .st::after{content:'';position:absolute;left:50%;bottom:20%;width:140%;height:4px;border-radius:50%;transform:translateX(-50%);background:inherit;filter:blur(3px);opacity:0.3}
+#garden .mush .mi .ca{position:relative;border-radius:50% 50% 45% 45%/60% 60% 30% 30%;z-index:2;overflow:hidden}
+#garden .mush .mi .ca .gl{position:absolute;top:5%;left:15%;width:50%;height:45%;border-radius:50%;background:rgba(255,255,255,0.15);filter:blur(3px)}
+#garden .mush .mi .ca::after{content:'';position:absolute;bottom:-4px;left:-10%;width:120%;height:10px;border-radius:50%;background:inherit;filter:blur(5px);opacity:0.3}
+#garden .mush .mi .ca .sp{position:absolute;border-radius:50%;pointer-events:none}
+/* M1 — tall teal */
+#garden .m1{bottom:13%;left:5%;--b:4s}#garden .m1 .mi .st{width:8px;height:44px;background:linear-gradient(to top,#1a5a4a,#3aaa80);box-shadow:0 0 12px rgba(58,184,160,0.15)}
+#garden .m1 .mi .ca{width:44px;height:22px;background:radial-gradient(ellipse at 40% 20%,#6ee0b0,#3aaa80 50%,#1a5a4a);box-shadow:0 0 20px rgba(58,184,160,0.2),inset 0 -4px 8px rgba(0,0,0,0.15)}
+#garden .m1 .mi .ca .sp{width:5px;height:4px;background:rgba(255,255,255,0.2);border-radius:50%;top:20%;left:20%;box-shadow:10px -2px 0 1px rgba(255,255,255,0.12),22px 4px 0 0 rgba(255,255,255,0.08)}
+/* M2 — elegant purple */
+#garden .m2{bottom:19%;left:20%;--b:5s}#garden .m2 .mi .st{width:6px;height:38px;background:linear-gradient(to top,#1a1a3a,#5a4a7a)}
+#garden .m2 .mi .ca{width:34px;height:24px;border-radius:50% 50% 40% 40%/70% 70% 20% 20%;background:radial-gradient(ellipse at 35% 15%,#b078e0,#7a4aaa 60%,#3a1a5a);box-shadow:0 0 20px rgba(176,96,224,0.2),inset 0 -4px 8px rgba(0,0,0,0.15)}
+#garden .m2 .mi .ca .gl{left:10%;width:60%;height:35%;background:rgba(220,200,255,0.12)}
+/* M3 — flat gold */
+#garden .m3{bottom:11%;right:7%;--b:4.5s}#garden .m3 .mi .st{width:10px;height:28px;background:linear-gradient(to top,#3a2a10,#8a6a30)}
+#garden .m3 .mi .ca{width:48px;height:16px;border-radius:50% 50% 45% 45%/80% 80% 20% 20%;background:radial-gradient(ellipse at 50% 10%,#f0c060,#c09040 60%,#7a5a20);box-shadow:0 0 20px rgba(232,160,64,0.2),inset 0 -4px 8px rgba(0,0,0,0.15)}
+#garden .m3 .mi .ca .gl{top:2%;left:20%;width:40%;height:40%}
+/* M4 — pink cute */
+#garden .m4{bottom:23%;right:20%;--b:5.5s}#garden .m4 .mi .st{width:5px;height:24px;background:linear-gradient(to top,#3a1a2a,#7a4a5a)}
+#garden .m4 .mi .ca{width:30px;height:20px;border-radius:50% 50% 50% 50%/70% 70% 30% 30%;background:radial-gradient(ellipse at 40% 20%,#f0a0b0,#d06080 60%,#7a2a4a);box-shadow:0 0 20px rgba(224,88,120,0.2),inset 0 -4px 8px rgba(0,0,0,0.15)}
+#garden .m4 .mi .ca .sp{width:4px;height:3px;background:rgba(255,255,255,0.25);border-radius:50%;top:15%;left:12%;box-shadow:8px 4px 0 1px rgba(255,255,255,0.15),18px -2px 0 0.5px rgba(255,255,255,0.1)}
+/* M5 — tall blue bell */
+#garden .m5{bottom:9%;left:42%;--b:6s}#garden .m5 .mi .st{width:5px;height:48px;background:linear-gradient(to top,#1a2a3a,#3a6a8a)}
+#garden .m5 .mi .ca{width:32px;height:26px;border-radius:50% 50% 35% 35%/75% 75% 15% 15%;background:radial-gradient(ellipse at 45% 15%,#70b0e0,#4090b8 60%,#1a4a6a);box-shadow:0 0 20px rgba(88,168,208,0.2),inset 0 -4px 8px rgba(0,0,0,0.15)}
+#garden .m5 .mi .ca .gl{left:12%;width:55%;height:30%;background:rgba(180,220,255,0.1)}
+#garden .m5 .mi .ca::before{content:'';position:absolute;bottom:2px;left:10%;width:80%;height:6px;border-radius:50%;background:rgba(0,0,0,0.08)}
+#garden .m5 .st::after{height:3px;bottom:15%;opacity:0.2}
+/* M6 — lavender cluster (wide double-cap) */
+#garden .m6{bottom:21%;left:58%;--b:3.5s}#garden .m6 .mi .st{width:7px;height:32px;background:linear-gradient(to top,#2a1a3a,#6a4a7a)}
+#garden .m6 .mi .ca{width:40px;height:18px;background:radial-gradient(ellipse at 50% 10%,#c090e0,#9060b0 60%,#4a2a5a);box-shadow:0 0 20px rgba(184,136,216,0.2),inset 0 -4px 8px rgba(0,0,0,0.15)}
+#garden .m6 .mi .ca::before{content:'';position:absolute;top:-2px;left:-8px;width:22px;height:14px;border-radius:50% 50% 40% 40%/70% 70% 30% 30%;background:radial-gradient(ellipse at 40% 20%,#d0a0f0,#9060b0 60%,#4a2a5a);box-shadow:0 0 12px rgba(184,136,216,0.15)}
+#garden .m6 .mi .ca .gl{left:10%;width:60%;height:35%;background:rgba(220,200,255,0.1)}
 /* === GROUND LAYER === */
 #garden .gl{position:absolute;bottom:0;left:0;right:0;height:25%;pointer-events:none;z-index:2;background:linear-gradient(0deg,rgba(5,8,5,0.45) 0%,transparent 100%)}
 /* === TITLE === */
@@ -183,12 +209,12 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
   <div class="gl"></div>
   <div class="v"></div>
   <div class="mist"></div>
-  <div class="mush m1"><img src="assets/mushrooms/m1.svg" alt=""/></div>
-  <div class="mush m2"><img src="assets/mushrooms/m2.svg" alt=""/></div>
-  <div class="mush m3"><img src="assets/mushrooms/m3.svg" alt=""/></div>
-  <div class="mush m4"><img src="assets/mushrooms/m4.svg" alt=""/></div>
-  <div class="mush m5"><img src="assets/mushrooms/m5.svg" alt=""/></div>
-  <div class="mush m6"><img src="assets/mushrooms/m6.svg" alt=""/></div>
+  <div class="mush m1"><div class="mi"><div class="st"></div><div class="ca"><div class="gl"></div><div class="sp"></div></div></div></div>
+  <div class="mush m2"><div class="mi"><div class="st"></div><div class="ca"><div class="gl"></div></div></div></div>
+  <div class="mush m3"><div class="mi"><div class="st"></div><div class="ca"><div class="gl"></div></div></div></div>
+  <div class="mush m4"><div class="mi"><div class="st"></div><div class="ca"><div class="gl"></div><div class="sp"></div></div></div></div>
+  <div class="mush m5"><div class="mi"><div class="st"></div><div class="ca"><div class="gl"></div></div></div></div>
+  <div class="mush m6"><div class="mi"><div class="st"></div><div class="ca"><div class="gl"></div></div></div></div>
   <div class="spores"><div class="s s1"></div><div class="s s2"></div><div class="s s3"></div><div class="s s4"></div><div class="s s5"></div><div class="s s6"></div><div class="s s7"></div></div>
   <div id="soil"></div>
 </div>
