@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>For Akiva, With Love</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  background: #0a0e1a;
+  color: #f5f0e8;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  cursor: default;
+}
+
+canvas#particles {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+#garden {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 2;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(200, 180, 255, 0.06) 0%, transparent 60%),
+              linear-gradient(180deg, #0a0e1a 0%, #0f1a10 35%, #162012 55%, #1a1812 75%, #120e0a 100%);
+}
+
+#garden::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 35%;
+  background: radial-gradient(ellipse 120% 40% at 50% 100%, rgba(60, 80, 40, 0.3) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+#garden::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 100%;
+  background: radial-gradient(ellipse 30% 20% at 50% 8%, rgba(200, 190, 255, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.moon {
+  position: absolute;
+  top: 5%; right: 15%;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, rgba(230, 225, 240, 0.3), rgba(200, 190, 230, 0.1) 60%, transparent 80%);
+  box-shadow: 0 0 80px rgba(200, 190, 240, 0.15), 0 0 150px rgba(200, 190, 240, 0.05);
+  pointer-events: none;
+}
+
+/* Title Screen */
+#title-screen {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 14, 26, 0.85);
+  backdrop-filter: blur(8px);
+  transition: opacity 1.5s ease, visibility 1.5s ease;
+}
+
+#title-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#title-screen h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  text-align: center;
+  line-height: 1.15;
+  letter-spacing: 0.05em;
+  color: #f5f0e8;
+  text-shadow: 0 0 60px rgba(200, 180, 240, 0.15);
+}
+
+#title-screen h1 .ampersand {
+  font-style: italic;
+  color: #e8d5b7;
+  font-weight: 400;
+}
+
+#title-screen h1 .name {
+  display: block;
+  font-style: italic;
+  font-weight: 400;
+  background: linear-gradient(135deg, #f0d78c, #e8c4a0, #f0d78c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-top: 0.1em;
+}
+
+.subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  color: rgba(245, 240, 232, 0.6);
+  margin-top: 1.2em;
+  letter-spacing: 0.08em;
+  animation: pulseText 3s ease-in-out infinite;
+}
+
+.tap-hint {
+  position: absolute;
+  bottom: 12%;
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+  color: rgba(245, 240, 232, 0.35);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  animation: pulseText 2.5s ease-in-out infinite;
+}
+
+@keyframes pulseText {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.9; }
+}
+
+/* Soil area clickable */
+#soil {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 50%;
+  z-index: 3;
+  cursor: pointer;
+}
+
+/* Flowers */
+.flower {
+  position: absolute;
+  z-index: 5;
+  transform-origin: bottom center;
+  transition: opacity 0.5s ease;
+  pointer-events: auto;
+}
+
+.flower.seed .flower-head,
+.flower.seed .stem { display: none; }
+
+.flower.seed .sprout { display: block; }
+
+.sprout {
+  display: none;
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 0;
+  background: linear-gradient(to top, #4a7c3f, #6b9e5e);
+  border-radius: 2px;
+  transform-origin: bottom center;
+}
+
+.sprout::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -3px;
+  width: 9px; height: 6px;
+  background: #6b9e5e;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(107, 158, 94, 0.3);
+}
+
+.flower.growing .sprout {
+  height: var(--sprout-height, 40px);
+  animation: sway 3s ease-in-out infinite;
+}
+
+.flower.growing .flower-head,
+.flower.growing .stem { display: none; }
+
+.flower.bloomed .sprout { display: none; }
+
+.stem {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: var(--stem-width, 3px);
+  height: var(--stem-height, 60px);
+  background: linear-gradient(to top, #3a6a30, #5a8a4e);
+  border-radius: 2px;
+  transform-origin: bottom center;
+  animation: sway var(--sway-duration, 3s) ease-in-out infinite;
+}
+
+.stem::before {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: 40%;
+  width: 12px; height: 7px;
+  background: #5a8a4e;
+  border-radius: 50% 0 50% 0;
+  transform: rotate(-20deg);
+}
+
+.stem::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  top: 55%;
+  width: 10px; height: 6px;
+  background: #4a7c3f;
+  border-radius: 0 50% 0 50%;
+  transform: rotate(15deg);
+}
+
+.flower-head {
+  position: absolute;
+  bottom: var(--stem-height, 60px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--flower-size, 50px);
+  height: var(--flower-size, 50px);
+  transform-origin: bottom center;
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+  opacity: 1;
+}
+
+.flower.blooming .flower-head {
+  animation: bloomIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes bloomIn {
+  0% { transform: translateX(-50%) scale(0.1); opacity: 0; }
+  60% { transform: translateX(-50%) scale(1.15); opacity: 1; }
+  100% { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+
+.petal {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: var(--petal-width, 20px);
+  height: var(--petal-height, 32px);
+  border-radius: 50% 50% 50% 50%;
+  transform-origin: 50% 100%;
+  opacity: 0.85;
+  transition: all 0.3s ease;
+}
+
+.flower.bloomed .petal {
+  animation: gentleSway calc(var(--sway-duration, 3s) * 1.3s) ease-in-out infinite;
+  animation-delay: calc(var(--petal-index, 0) * -0.3s);
+}
+
+@keyframes gentleSway {
+  0%, 100% { transform: rotate(var(--petal-rotation, 0deg)) translateY(-50%) rotate(var(--petal-tilt, 0deg)); }
+  50% { transform: rotate(var(--petal-rotation, 0deg)) translateY(-50%) rotate(calc(var(--petal-tilt, 0deg) + 3deg)); }
+}
+
+.flower-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--center-size, 12px);
+  height: var(--center-size, 12px);
+  border-radius: 50%;
+  z-index: 2;
+  box-shadow: 0 0 8px var(--glow-color, rgba(255, 215, 0, 0.4));
+}
+
+.flower-glow {
+  position: absolute;
+  bottom: var(--stem-height, 60px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(var(--flower-size, 50px) * 2);
+  height: calc(var(--flower-size, 50px) * 2);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+
+.flower.bloomed .flower-glow {
+  opacity: 1;
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+@keyframes sway {
+  0%, 100% { transform: translateX(-50%) rotate(-1.5deg); }
+  50% { transform: translateX(-50%) rotate(1.5deg); }
+}
+
+.flower.bloomed .stem {
+  animation: sway var(--sway-duration, 3s) ease-in-out infinite;
+}
+
+/* Memory Card */
+#memory-card {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  background: rgba(5, 8, 15, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 1.5rem;
+}
+
+#memory-card.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.card-inner {
+  background: rgba(30, 35, 45, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(245, 240, 232, 0.1);
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 480px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  transform: translateY(30px) scale(0.95);
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5), 0 0 40px rgba(200, 180, 240, 0.05);
+}
+
+#memory-card.visible .card-inner {
+  transform: translateY(0) scale(1);
+}
+
+.close-card {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(245, 240, 232, 0.15);
+  background: rgba(245, 240, 232, 0.05);
+  color: rgba(245, 240, 232, 0.6);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  line-height: 1;
+}
+
+.close-card:hover {
+  background: rgba(245, 240, 232, 0.12);
+  color: #f5f0e8;
+}
+
+.card-photo {
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  background: rgba(245, 240, 232, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.card-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-photo .photo-placeholder {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: rgba(245, 240, 232, 0.25);
+  font-size: 0.9rem;
+}
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  color: #f5f0e8;
+  margin-bottom: 0.3rem;
+  line-height: 1.3;
+}
+
+.card-date {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: rgba(245, 240, 232, 0.4);
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+.card-message {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1rem, 2.5vw, 1.15rem);
+  line-height: 1.65;
+  color: rgba(245, 240, 232, 0.8);
+}
+
+.card-flower-num {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: rgba(245, 240, 232, 0.25);
+  border: 1px solid rgba(245, 240, 232, 0.08);
+  padding: 0.2em 0.7em;
+  border-radius: 20px;
+  margin-bottom: 1rem;
+}
+
+/* Progress */
+#progress {
+  position: fixed;
+  top: 1.5rem; left: 1.5rem;
+  z-index: 6;
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: rgba(245, 240, 232, 0.3);
+  letter-spacing: 0.08em;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+
+#progress.visible { opacity: 1; }
+
+#progress .count {
+  color: rgba(245, 240, 232, 0.7);
+  font-weight: 400;
+}
+
+/* Plant hint */
+#plant-hint {
+  position: fixed;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  color: rgba(245, 240, 232, 0.3);
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+#plant-hint.visible { opacity: 1; animation: pulseText 3s ease-in-out infinite; }
+
+#plant-hint .sparkle {
+  display: inline-block;
+  animation: sparkleFloat 2s ease-in-out infinite;
+}
+
+@keyframes sparkleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Finale overlay */
+#finale {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 2s ease, visibility 2s ease;
+  background: rgba(5, 8, 15, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+#finale.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+#finale .heart-tree-container {
+  position: relative;
+  width: min(300px, 70vw);
+  height: min(280px, 65vw);
+  margin-bottom: 2rem;
+}
+
+.heart-tree-trunk {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 12px; height: 0;
+  background: linear-gradient(to top, #3a2a1a, #5a3a25);
+  border-radius: 4px;
+  transition: height 1.5s ease;
+}
+
+#finale.visible .heart-tree-trunk {
+  height: 80px;
+}
+
+.heart-tree-crown {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  opacity: 0;
+  transition: all 1.5s ease;
+}
+
+#finale.visible .heart-tree-crown {
+  width: min(280px, 65vw);
+  height: min(240px, 55vw);
+  opacity: 1;
+}
+
+.heart-tree-crown::before,
+.heart-tree-crown::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  width: 50%;
+  height: 70%;
+  border-radius: 50% 50% 0 0;
+  background: radial-gradient(ellipse at 50% 60%, rgba(240, 215, 140, 0.3), rgba(196, 160, 255, 0.15) 50%, transparent 70%);
+  box-shadow: 0 0 60px rgba(240, 215, 140, 0.1), inset 0 0 60px rgba(240, 215, 140, 0.05);
+  animation: heartGlow 4s ease-in-out infinite;
+}
+
+.heart-tree-crown::before {
+  left: 2%;
+  transform: rotate(-20deg);
+  transform-origin: bottom right;
+}
+
+.heart-tree-crown::after {
+  right: 2%;
+  transform: rotate(20deg);
+  transform-origin: bottom left;
+}
+
+@keyframes heartGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.heart-tree-center {
+  position: absolute;
+  top: 38%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: #f0d78c;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  opacity: 0;
+  transition: opacity 1s ease 2.5s;
+  text-shadow: 0 0 40px rgba(240, 215, 140, 0.3);
+  white-space: nowrap;
+}
+
+#finale.visible .heart-tree-center {
+  opacity: 1;
+}
+
+.finale-message {
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1.5s ease 3.5s;
+}
+
+#finale.visible .finale-message {
+  opacity: 1;
+}
+
+.finale-message p {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  color: rgba(245, 240, 232, 0.8);
+  line-height: 1.6;
+}
+
+.finale-message .finale-signoff {
+  margin-top: 0.5rem;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+  background: linear-gradient(135deg, #f0d78c, #e8c4a0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.finale-particles {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Scrollbar styling */
+.card-inner::-webkit-scrollbar { width: 4px; }
+.card-inner::-webkit-scrollbar-track { background: transparent; }
+.card-inner::-webkit-scrollbar-thumb { background: rgba(245, 240, 232, 0.15); border-radius: 4px; }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .moon { width: 50px; height: 50px; top: 4%; right: 10%; }
+  .card-inner { padding: 1.5rem; border-radius: 16px; }
+  #progress { top: 1rem; left: 1rem; font-size: 0.7rem; }
+}
+
+@media (max-height: 500px) {
+  .card-inner { max-height: 80vh; padding: 1.2rem; }
+  .card-photo { max-height: 30vh; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<div id="garden">
+  <div class="moon"></div>
+  <div id="soil"></div>
+</div>
+
+<div id="title-screen">
+  <h1>For <span class="ampersand">&</span><span class="name">Akiva, With Love</span></h1>
+  <p class="subtitle">A garden of memories, grown just for you</p>
+  <p class="tap-hint">Tap anywhere to enter</p>
+</div>
+
+<div id="plant-hint">
+  <span class="sparkle">✦</span> Tap the earth to plant a seed of memory <span class="sparkle">✦</span>
+</div>
+
+<div id="progress">
+  <span class="count" id="bloom-count">0</span> / <span id="total-count">14</span>
+</div>
+
+<div id="memory-card">
+  <div class="card-inner">
+    <button class="close-card" id="close-card">&#10005;</button>
+    <span class="card-flower-num" id="card-num">Flower 1</span>
+    <div class="card-photo" id="card-photo">
+      <span class="photo-placeholder">a memory awaits</span>
+      <img id="card-img" src="" alt="" style="display:none">
+    </div>
+    <h2 class="card-title" id="card-title"></h2>
+    <p class="card-date" id="card-date"></p>
+    <p class="card-message" id="card-message"></p>
+  </div>
+</div>
+
+<div id="finale">
+  <div class="heart-tree-container">
+    <div class="heart-tree-crown"></div>
+    <div class="heart-tree-trunk"></div>
+    <div class="heart-tree-center">&hearts;</div>
+  </div>
+  <div class="finale-message">
+    <p>Every flower in this garden<br>is a piece of my heart</p>
+    <p class="finale-signoff">Akiva, you are my everything.<br>&mdash; Shahid</p>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// 1. FLOWER DATA — 14 memories in chronological order
+// ============================================================
+const FLOWERS = [
+  {
+    title: "The First Spark",
+    date: "The day everything changed",
+    message: "I don't remember exactly what I expected when I first saw you. But I remember thinking: there's something different about this one. Like the universe had been quietly arranging a meeting it knew was inevitable. That moment was a seed, planted before I even knew I was gardening.",
+    petals: 6, petalColor: "#ff6b9d", centerColor: "#ffd700",
+    size: 1.0, stemHeight: 65, glowColor: "rgba(255, 107, 157, 0.35)"
+  },
+  {
+    title: "Getting to Know You",
+    date: "The first real conversations",
+    message: "Those early talks — staying up late, trading stories, finding pieces of ourselves in each other. Every question I asked, every answer you gave, I felt like I was unwrapping a gift. You were so much more than I ever could have imagined.",
+    petals: 8, petalColor: "#7ec8e3", centerColor: "#ffffff",
+    size: 1.1, stemHeight: 70, glowColor: "rgba(126, 200, 227, 0.3)"
+  },
+  {
+    title: "Our First Night",
+    date: "Staying up until the sun came up",
+    message: "Time stopped meaning anything. The hours slipped by like water through fingers while we talked about everything and nothing. I watched the dawn paint the sky and thought: I want to see a thousand more dawns with this person.",
+    petals: 4, petalColor: "#d4a5ff", centerColor: "#f5f0e8",
+    size: 0.85, stemHeight: 55, glowColor: "rgba(212, 165, 255, 0.3)"
+  },
+  {
+    title: "Our First Adventure",
+    date: "The first time we went somewhere together",
+    message: "We didn't need a destination. Being with you made every place feel like somewhere I wanted to be. The world looked different through your eyes — brighter, stranger, more full of wonder. I think that was the day I realized I was falling.",
+    petals: 5, petalColor: "#f0d78c", centerColor: "#e8a87c",
+    size: 0.95, stemHeight: 60, glowColor: "rgba(240, 215, 140, 0.35)"
+  },
+  {
+    title: "Growing Closer",
+    date: "Those early, tender days",
+    message: "The in-between moments. A hand reaching for mine. A shared laugh at something only we understood. Learning the small things — how you take your tea, the way you hum when you're happy, the sound of your name in my thoughts.",
+    petals: 6, petalColor: "#6b9e5e", centerColor: "#a8d5a2",
+    size: 0.9, stemHeight: 58, glowColor: "rgba(107, 158, 94, 0.3)"
+  },
+  {
+    title: "The Deep Talks",
+    date: "Late nights, honest words",
+    message: "We peeled back the layers. Fears, dreams, the parts of ourselves we don't show everyone. You listened without judgment and shared without hesitation. In those conversations, I found not just you, but a version of myself I liked better.",
+    petals: 6, petalColor: "#c4a0ff", centerColor: "#ff6b9d",
+    size: 1.05, stemHeight: 68, glowColor: "rgba(196, 160, 255, 0.3)"
+  },
+  {
+    title: "Rainy Days",
+    date: "A cozy memory",
+    message: "The rain came down in sheets, and we didn't care. Wrapped up together, warm and dry, while the world washed itself clean. Sometimes the best days are the ones where nothing happens — except everything that matters.",
+    petals: 6, petalColor: "#4a8ea8", centerColor: "#c4d8e0",
+    size: 0.95, stemHeight: 62, glowColor: "rgba(74, 142, 168, 0.3)"
+  },
+  {
+    title: "Wishes",
+    date: "Dreaming together",
+    message: "We talked about the future like it was a garden we were planning. Where we'd go, what we'd do, who we wanted to become. Every wish we shared felt like planting another seed. And I wanted to grow all of them with you.",
+    petals: 12, petalColor: "#e8a87c", centerColor: "#c47a5a",
+    size: 0.85, stemHeight: 55, glowColor: "rgba(232, 168, 124, 0.25)"
+  },
+  {
+    title: "Cozy Nights",
+    date: "Safe and warm",
+    message: "The quiet evenings. Just existing in the same space, comfortable in silence or lost in conversation. Nights when the rest of the world faded away and there was only us, wrapped in warmth and the feeling of being home.",
+    petals: 5, petalColor: "#a8d5a2", centerColor: "#6b9e5e",
+    size: 0.9, stemHeight: 57, glowColor: "rgba(168, 213, 162, 0.3)"
+  },
+  {
+    title: "Winter Memories",
+    date: "A moment in the cold",
+    message: "The world went still and white, and we held each other against the chill. Your warmth in my arms, the frost on the window, the quiet of a world muffled by snow. Some moments freeze themselves into your heart forever.",
+    petals: 6, petalColor: "#a0c4e8", centerColor: "#e8f0f8",
+    size: 1.0, stemHeight: 64, glowColor: "rgba(160, 196, 232, 0.25)"
+  },
+  {
+    title: "New Beginnings",
+    date: "A fresh chapter",
+    message: "Change came, and we faced it together. You made the unknown feel less frightening, the future feel more hopeful. Every ending with you felt like the start of something new. As long as I had you, I could face anything.",
+    petals: 5, petalColor: "#ff9a8b", centerColor: "#ffd7c4",
+    size: 0.95, stemHeight: 60, glowColor: "rgba(255, 154, 139, 0.3)"
+  },
+  {
+    title: "Through the Storm",
+    date: "Hard times that made us stronger",
+    message: "It wasn't always easy. There were days the clouds gathered and the rain felt relentless. But we held on. We held each other. And when the storm passed, we were still standing, roots intertwined, stronger than before.",
+    petals: 4, petalColor: "#5a4a6a", centerColor: "#c4a0ff",
+    size: 0.85, stemHeight: 56, glowColor: "rgba(90, 74, 106, 0.35)"
+  },
+  {
+    title: "Building Dreams",
+    date: "Our future, taking shape",
+    message: "Everything we've built together. Every plan, every hope, every quiet moment of believing in us. You've made me want to be the best version of myself, and I'll spend the rest of my life trying to be worthy of you.",
+    petals: 6, petalColor: "#ffd700", centerColor: "#ff6b6b",
+    size: 1.15, stemHeight: 72, glowColor: "rgba(255, 215, 0, 0.35)"
+  },
+  {
+    title: "Just Because",
+    date: "No reason at all",
+    message: "This one has no special date, no big story. It's just because I was thinking of you and wanted you to know: you are loved, completely and without condition. Every day, in every way. This flower is just because you exist, and that makes the world more beautiful.",
+    petals: 8, petalColor: "#f0d78c", centerColor: "#d4a5ff",
+    size: 0.9, stemHeight: 58, glowColor: "rgba(240, 215, 140, 0.35)"
+  }
+];
+
+// ============================================================
+// 2. STATE
+// ============================================================
+const STATE = {
+  started: false,
+  currentFlower: 0,        // which flower to plant next (index)
+  bloomedFlowers: 0,       // how many have been viewed
+  planted: false,          // is a flower currently growing
+  finaleShown: false,
+  audioPlaying: false,
+  audioReady: false,
+  audio: null,
+  mouseX: 0,
+  mouseY: 0
+};
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('forAkivaGarden');
+    if (saved) {
+      const data = JSON.parse(saved);
+      STATE.currentFlower = data.currentFlower || 0;
+      STATE.bloomedFlowers = data.bloomedFlowers || 0;
+    }
+  } catch (e) { /* ignore */ }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem('forAkivaGarden', JSON.stringify({
+      currentFlower: STATE.currentFlower,
+      bloomedFlowers: STATE.bloomedFlowers
+    }));
+  } catch (e) { /* ignore */ }
+}
+
+// ============================================================
+// 3. DOM REFS
+// ============================================================
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+const garden = document.getElementById('garden');
+const soil = document.getElementById('soil');
+const titleScreen = document.getElementById('title-screen');
+const plantHint = document.getElementById('plant-hint');
+const progress = document.getElementById('progress');
+const bloomCount = document.getElementById('bloom-count');
+const totalCount = document.getElementById('total-count');
+const memoryCard = document.getElementById('memory-card');
+const closeCard = document.getElementById('close-card');
+const cardNum = document.getElementById('card-num');
+const cardPhoto = document.getElementById('card-photo');
+const cardImg = document.getElementById('card-img');
+const cardPlaceholder = document.querySelector('.photo-placeholder');
+const cardTitle = document.getElementById('card-title');
+const cardDate = document.getElementById('card-date');
+const cardMessage = document.getElementById('card-message');
+const finale = document.getElementById('finale');
+
+totalCount.textContent = FLOWERS.length;
+
+// ============================================================
+// 4. CANVAS PARTICLES
+// ============================================================
+let W, H, dpr;
+const particles = [];
+const stardust = [];
+const burstParticles = [];
+let fireflyCount = 20;
+
+function resizeCanvas() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  ctx.scale(dpr, dpr);
+}
+
+class Firefly {
+  constructor() { this.reset(true); }
+  reset(init) {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H * 0.8;
+    this.vx = (Math.random() - 0.5) * 0.3;
+    this.vy = (Math.random() - 0.5) * 0.2;
+    this.radius = 1.5 + Math.random() * 2;
+    this.phase = Math.random() * Math.PI * 2;
+    this.speed = 0.1 + Math.random() * 0.3;
+    this.opacity = 0.3 + Math.random() * 0.5;
+    if (!init) this.y = Math.random() * H * 0.9;
+  }
+  update() {
+    this.x += this.vx + Math.sin(Date.now() * 0.001 + this.phase) * 0.1;
+    this.y += this.vy + Math.cos(Date.now() * 0.0013 + this.phase * 0.7) * 0.08;
+    this.phase += 0.01;
+    if (this.x < -10 || this.x > W + 10 || this.y < -10 || this.y > H + 10) this.reset();
+  }
+  draw(ctx) {
+    const pulse = 0.5 + 0.5 * Math.sin(Date.now() * 0.002 + this.phase);
+    const alpha = this.opacity * pulse;
+    const r = this.radius * (0.8 + 0.4 * pulse);
+
+    const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, r * 4);
+    gradient.addColorStop(0, `rgba(240, 215, 140, ${alpha})`);
+    gradient.addColorStop(0.3, `rgba(200, 180, 230, ${alpha * 0.4})`);
+    gradient.addColorStop(1, `rgba(200, 180, 230, 0)`);
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, r * 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = `rgba(255, 245, 220, ${alpha * 0.9})`;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, r * 0.6, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+class Stardust {
+  constructor(x, y, color) {
+    this.x = x;
+    this.y = y;
+    this.vx = (Math.random() - 0.5) * 2;
+    this.vy = -Math.random() * 2 - 0.5;
+    this.life = 1;
+    this.decay = 0.008 + Math.random() * 0.012;
+    this.radius = 1 + Math.random() * 2;
+    this.color = color || '#f0d78c';
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.vy += 0.01;
+    this.life -= this.decay;
+  }
+  draw(ctx) {
+    if (this.life <= 0) return;
+    const alpha = this.life;
+    ctx.fillStyle = this.color;
+    ctx.globalAlpha = alpha * 0.6;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.globalAlpha = alpha * 0.2;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius * 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+}
+
+class BurstParticle {
+  constructor(x, y, color) {
+    this.x = x;
+    this.y = y;
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 1 + Math.random() * 3;
+    this.vx = Math.cos(angle) * speed;
+    this.vy = Math.sin(angle) * speed - 1;
+    this.life = 1;
+    this.decay = 0.01 + Math.random() * 0.02;
+    this.radius = 2 + Math.random() * 3;
+    this.color = color || '#f0d78c';
+    this.gravity = 0.02;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.vy += this.gravity;
+    this.life -= this.decay;
+  }
+  draw(ctx) {
+    if (this.life <= 0) return;
+    const alpha = this.life;
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius * (0.3 + 0.7 * this.life), 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.globalAlpha = alpha * 0.3;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius * 3 * this.life, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+}
+
+// Mouse stardust trail
+function emitStardust(x, y) {
+  if (!STATE.started) return;
+  for (let i = 0; i < 3; i++) {
+    stardust.push(new Stardust(x + (Math.random() - 0.5) * 10, y + (Math.random() - 0.5) * 10));
+  }
+  if (stardust.length > 200) stardust.splice(0, stardust.length - 200);
+}
+
+function emitBurst(x, y, color, count) {
+  count = count || 30;
+  for (let i = 0; i < count; i++) {
+    burstParticles.push(new BurstParticle(x, y, color));
+  }
+}
+
+function initFireflies() {
+  fireflyCount = Math.min(25, Math.floor(15 + STATE.bloomedFlowers * 0.8));
+  while (particles.length < fireflyCount) particles.push(new Firefly());
+  while (particles.length > fireflyCount) particles.pop();
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Update & draw fireflies
+  for (const f of particles) {
+    f.update();
+    f.draw(ctx);
+  }
+
+  // Update & draw stardust trail
+  for (let i = stardust.length - 1; i >= 0; i--) {
+    stardust[i].update();
+    stardust[i].draw(ctx);
+    if (stardust[i].life <= 0) stardust.splice(i, 1);
+  }
+
+  // Update & draw burst particles
+  for (let i = burstParticles.length - 1; i >= 0; i--) {
+    burstParticles[i].update();
+    burstParticles[i].draw(ctx);
+    if (burstParticles[i].life <= 0) burstParticles.splice(i, 1);
+  }
+
+  requestAnimationFrame(animateParticles);
+}
+
+// ============================================================
+// 5. GARDEN / FLOWER MANAGEMENT
+// ============================================================
+const flowersDOM = [];
+
+function getFlowerPosition() {
+  const existing = flowersDOM.filter(f => document.body.contains(f.el));
+  const padding = 70;
+  const flowerSize = 80;
+  let attempts = 0;
+
+  while (attempts < 50) {
+    attempts++;
+    const x = padding + Math.random() * (W - padding * 2 - flowerSize);
+    const y = H * 0.25 + Math.random() * (H * 0.45 - flowerSize);
+
+    let overlap = false;
+    for (const f of existing) {
+      const rect = f.el.getBoundingClientRect();
+      if (Math.abs(rect.left - x) < 65 && Math.abs(rect.top - y) < 85) {
+        overlap = true;
+        break;
+      }
+    }
+    if (!overlap) return { x, y };
+  }
+
+  return {
+    x: padding + Math.random() * (W - padding * 2 - flowerSize),
+    y: H * 0.25 + Math.random() * (H * 0.35)
+  };
+}
+
+function plantFlower(x, y) {
+  if (!STATE.started || STATE.planted) return;
+  if (STATE.currentFlower >= FLOWERS.length) {
+    if (!STATE.finaleShown) showFinale();
+    return;
+  }
+
+  STATE.planted = true;
+  const data = FLOWERS[STATE.currentFlower];
+  const index = STATE.currentFlower;
+  pos = { x, y };
+
+  emitBurst(x, y, data.glowColor || '#f0d78c', 25);
+
+  const el = document.createElement('div');
+  el.className = 'flower seed';
+  el.dataset.index = index;
+  el.style.left = (pos.x - 25) + 'px';
+  el.style.top = (pos.y - 25) + 'px';
+  el.style.setProperty('--stem-height', (data.stemHeight || 60) + 'px');
+  el.style.setProperty('--stem-width', '3px');
+  el.style.setProperty('--flower-size', (data.size || 1) * 50 + 'px');
+  el.style.setProperty('--sway-duration', (2.5 + Math.random() * 1.5) + 's');
+
+  // Sprout
+  const sprout = document.createElement('div');
+  sprout.className = 'sprout';
+  el.appendChild(sprout);
+
+  // Stem
+  const stem = document.createElement('div');
+  stem.className = 'stem';
+  el.appendChild(stem);
+
+  // Flower head
+  const head = document.createElement('div');
+  head.className = 'flower-head';
+
+  const petalW = (data.size || 1) * 18;
+  const petalH = (data.size || 1) * 30;
+  const centerSize = (data.size || 1) * 11;
+
+  for (let i = 0; i < data.petals; i++) {
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+    const angle = (i / data.petals) * 360;
+    const tilt = (i % 2 === 0) ? -2 : 2;
+    petal.style.setProperty('--petal-rotation', angle + 'deg');
+    petal.style.setProperty('--petal-tilt', tilt + 'deg');
+    petal.style.setProperty('--petal-width', petalW + 'px');
+    petal.style.setProperty('--petal-height', petalH + 'px');
+    petal.style.setProperty('--petal-index', i);
+    petal.style.background = `linear-gradient(135deg, ${data.petalColor}, ${data.petalColor}dd)`;
+    petal.style.transform = `rotate(${angle}deg) translateY(-50%)`;
+    petal.style.borderRadius = '50% 50% 50% 50%';
+    petal.style.boxShadow = `0 0 6px ${data.glowColor || 'rgba(255,215,0,0.2)'}`;
+    head.appendChild(petal);
+  }
+
+  const center = document.createElement('div');
+  center.className = 'flower-center';
+  center.style.setProperty('--center-size', centerSize + 'px');
+  center.style.width = centerSize + 'px';
+  center.style.height = centerSize + 'px';
+  center.style.backgroundColor = data.centerColor;
+  head.appendChild(center);
+
+  el.appendChild(head);
+
+  // Glow
+  const glow = document.createElement('div');
+  glow.className = 'flower-glow';
+  glow.style.background = `radial-gradient(circle, ${data.glowColor || 'rgba(255,215,0,0.2)'} 0%, transparent 70%)`;
+  el.appendChild(glow);
+
+  garden.appendChild(el);
+
+  flowersDOM.push({ el, index, data, state: 'seed', pos });
+
+  // Trigger growth after a moment
+  setTimeout(() => {
+    el.classList.remove('seed');
+    el.classList.add('growing');
+    sprout.style.setProperty('--sprout-height', (data.stemHeight * 0.6 || 36) + 'px');
+
+    setTimeout(() => {
+      el.classList.remove('growing');
+      el.classList.add('bloomed');
+      emitBurst(
+        pos.x + 25,
+        pos.y - (data.stemHeight || 60) * 0.7,
+        data.glowColor || '#f0d78c',
+        20
+      );
+
+      plantHint.classList.remove('visible');
+      STATE.currentFlower++;
+      STATE.planted = false;
+      saveState();
+      updateProgress();
+      initFireflies();
+
+      // Auto-open memory card on tap
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openMemoryCard(index);
+      });
+      el.addEventListener('touchend', (e) => {
+        e.stopPropagation();
+        openMemoryCard(index);
+      });
+
+      // Show hint to tap
+      if (STATE.bloomedFlowers < FLOWERS.length) {
+        setTimeout(() => {
+          plantHint.classList.add('visible');
+        }, 800);
+      }
+    }, 2000);
+  }, 300);
+}
+
+function openMemoryCard(index) {
+  const data = FLOWERS[index];
+  if (!data) return;
+
+  // Check if already bloomed
+  const flowerEl = flowersDOM.find(f => f.index === index);
+  if (flowerEl && flowerEl.state !== 'bloomed') return;
+  if (flowerEl) flowerEl.state = 'opened';
+
+  cardNum.textContent = `Flower ${index + 1} of ${FLOWERS.length}`;
+  cardTitle.textContent = data.title;
+  cardDate.textContent = data.date;
+  cardMessage.textContent = data.message;
+
+  // Try photo
+  const photoPath = `assets/photos/${index + 1}.jpg`;
+  cardImg.src = photoPath;
+  cardImg.onload = () => {
+    cardPlaceholder.style.display = 'none';
+    cardImg.style.display = 'block';
+  };
+  cardImg.onerror = () => {
+    cardPlaceholder.style.display = 'block';
+    cardImg.style.display = 'none';
+    cardPlaceholder.textContent = '✨ a memory awaits';
+  };
+
+  if (STATE.bloomedFlowers <= index) {
+    STATE.bloomedFlowers = Math.max(STATE.bloomedFlowers, index + 1);
+    saveState();
+    updateProgress();
+    initFireflies();
+  }
+
+  memoryCard.classList.add('visible');
+
+  // Check if all done
+  if (STATE.bloomedFlowers >= FLOWERS.length) {
+    setTimeout(() => showFinale(), 1000);
+  }
+}
+
+function closeMemoryCard() {
+  memoryCard.classList.remove('visible');
+}
+
+// ============================================================
+// 6. PROGRESS
+// ============================================================
+function updateProgress() {
+  bloomCount.textContent = STATE.bloomedFlowers;
+  if (STATE.bloomedFlowers > 0) {
+    progress.classList.add('visible');
+  }
+}
+
+// ============================================================
+// 7. AUDIO
+// ============================================================
+function initAudio() {
+  STATE.audio = new Audio();
+  STATE.audio.src = 'assets/audio/mirrors.mp3';
+  STATE.audio.loop = false;
+  STATE.audio.volume = 0;
+  STATE.audio.preload = 'auto';
+
+  STATE.audio.addEventListener('canplaythrough', () => {
+    STATE.audioReady = true;
+  });
+
+  STATE.audio.addEventListener('error', () => {
+    // Audio file not found — that's okay
+    STATE.audioReady = false;
+  });
+}
+
+function startMusic() {
+  if (!STATE.audioReady || STATE.audioPlaying) return;
+  STATE.audioPlaying = true;
+
+  STATE.audio.currentTime = 0;
+  STATE.audio.play().catch(() => {});
+
+  // Fade in over 3 seconds
+  let vol = 0;
+  const fadeIn = setInterval(() => {
+    vol += 0.05;
+    if (vol >= 0.2) {
+      vol = 0.2;
+      clearInterval(fadeIn);
+    }
+    STATE.audio.volume = vol;
+  }, 150);
+
+  // When song ends, restart softly
+  STATE.audio.addEventListener('ended', () => {
+    STATE.audio.currentTime = 0;
+    STATE.audio.play().catch(() => {});
+  }, { once: false });
+}
+
+function swellMusic() {
+  if (!STATE.audio || !STATE.audioPlaying) return;
+  let vol = 0.2;
+  const swell = setInterval(() => {
+    vol += 0.04;
+    if (vol >= 0.5) {
+      vol = 0.5;
+      clearInterval(swell);
+    }
+    STATE.audio.volume = vol;
+  }, 200);
+}
+
+// ============================================================
+// 8. FINALE
+// ============================================================
+function showFinale() {
+  if (STATE.finaleShown) return;
+  STATE.finaleShown = true;
+
+  finale.classList.add('visible');
+  swellMusic();
+
+  // Extra particle burst
+  for (let i = 0; i < 5; i++) {
+    setTimeout(() => {
+      emitBurst(W * 0.5 + (Math.random() - 0.5) * 200, H * 0.4 + (Math.random() - 0.5) * 100, '#f0d78c', 40);
+    }, i * 400);
+  }
+}
+
+// ============================================================
+// 9. STATE RESTORATION
+// ============================================================
+function restoreGarden() {
+  const count = STATE.bloomedFlowers;
+  if (count === 0) return;
+
+  for (let i = 0; i < count && i < FLOWERS.length; i++) {
+    const data = FLOWERS[i];
+    const pos = getFlowerPosition();
+
+    const el = document.createElement('div');
+    el.className = 'flower bloomed';
+    el.dataset.index = i;
+    el.style.left = (pos.x - 25) + 'px';
+    el.style.top = (pos.y - 25) + 'px';
+    el.style.setProperty('--stem-height', (data.stemHeight || 60) + 'px');
+    el.style.setProperty('--stem-width', '3px');
+    el.style.setProperty('--flower-size', (data.size || 1) * 50 + 'px');
+    el.style.setProperty('--sway-duration', (2.5 + Math.random() * 1.5) + 's');
+
+    const stem = document.createElement('div');
+    stem.className = 'stem';
+    el.appendChild(stem);
+
+    const head = document.createElement('div');
+    head.className = 'flower-head';
+
+    const petalW = (data.size || 1) * 18;
+    const petalH = (data.size || 1) * 30;
+
+    for (let p = 0; p < data.petals; p++) {
+      const petal = document.createElement('div');
+      petal.className = 'petal';
+      const angle = (p / data.petals) * 360;
+      const tilt = (p % 2 === 0) ? -2 : 2;
+      petal.style.setProperty('--petal-rotation', angle + 'deg');
+      petal.style.setProperty('--petal-tilt', tilt + 'deg');
+      petal.style.setProperty('--petal-width', petalW + 'px');
+      petal.style.setProperty('--petal-height', petalH + 'px');
+      petal.style.background = `linear-gradient(135deg, ${data.petalColor}, ${data.petalColor}dd)`;
+      petal.style.transform = `rotate(${angle}deg) translateY(-50%)`;
+      petal.style.boxShadow = `0 0 6px ${data.glowColor || 'rgba(255,215,0,0.2)'}`;
+      head.appendChild(petal);
+    }
+
+    const center = document.createElement('div');
+    center.className = 'flower-center';
+    const centerSize = (data.size || 1) * 11;
+    center.style.width = centerSize + 'px';
+    center.style.height = centerSize + 'px';
+    center.style.backgroundColor = data.centerColor;
+    head.appendChild(center);
+
+    el.appendChild(head);
+
+    const glow = document.createElement('div');
+    glow.className = 'flower-glow';
+    glow.style.background = `radial-gradient(circle, ${data.glowColor || 'rgba(255,215,0,0.2)'} 0%, transparent 70%)`;
+    el.appendChild(glow);
+
+    garden.appendChild(el);
+
+    flowersDOM.push({ el, index: i, data, state: 'opened', pos });
+
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openMemoryCard(i);
+    });
+    el.addEventListener('touchend', (e) => {
+      e.stopPropagation();
+      openMemoryCard(i);
+    });
+  }
+
+  updateProgress();
+  initFireflies();
+
+  if (STATE.bloomedFlowers >= FLOWERS.length) {
+    setTimeout(() => showFinale(), 2000);
+  } else {
+    plantHint.classList.add('visible');
+  }
+}
+
+// ============================================================
+// 10. EVENTS
+// ============================================================
+function handleInteraction(x, y) {
+  if (!STATE.started) {
+    // Start the experience
+    STATE.started = true;
+    titleScreen.classList.add('hidden');
+    plantHint.classList.add('visible');
+    startMusic();
+
+    if (STATE.bloomedFlowers === 0) {
+      // Plant first flower near center
+      setTimeout(() => {
+        plantFlower(W / 2 + (Math.random() - 0.5) * 80, H * 0.45 + (Math.random() - 0.5) * 60);
+      }, 800);
+    }
+    return;
+  }
+
+  // Plant a new flower
+  plantFlower(x, y);
+}
+
+// Mouse events
+soil.addEventListener('click', (e) => {
+  const rect = garden.getBoundingClientRect();
+  handleInteraction(e.clientX - rect.left, e.clientY - rect.top);
+});
+
+soil.addEventListener('mousemove', (e) => {
+  STATE.mouseX = e.clientX;
+  STATE.mouseY = e.clientY;
+  emitStardust(e.clientX, e.clientY);
+});
+
+// Touch events
+soil.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  const touch = e.touches[0];
+  const rect = garden.getBoundingClientRect();
+  handleInteraction(touch.clientX - rect.left, touch.clientY - rect.top);
+}, { passive: false });
+
+soil.addEventListener('touchmove', (e) => {
+  const touch = e.touches[0];
+  STATE.mouseX = touch.clientX;
+  STATE.mouseY = touch.clientY;
+  emitStardust(touch.clientX, touch.clientY);
+}, { passive: true });
+
+// Title screen tap
+titleScreen.addEventListener('click', () => {
+  if (!STATE.started) {
+    handleInteraction(W / 2, H / 2);
+  }
+});
+
+titleScreen.addEventListener('touchstart', (e) => {
+  if (!STATE.started) {
+    e.preventDefault();
+    handleInteraction(W / 2, H / 2);
+  }
+}, { passive: false });
+
+// Close memory card
+closeCard.addEventListener('click', closeMemoryCard);
+memoryCard.addEventListener('click', (e) => {
+  if (e.target === memoryCard) closeMemoryCard();
+});
+
+// ============================================================
+// 11. INIT
+// ============================================================
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+initFireflies();
+loadState();
+initAudio();
+
+// Start canvas animation
+animateParticles();
+
+// If returning visitor, restore garden
+if (STATE.bloomedFlowers > 0) {
+  STATE.started = true;
+  titleScreen.classList.add('hidden');
+  restoreGarden();
+  startMusic();
+}
+
+// Also allow global mouse stardust on garden
+garden.addEventListener('mousemove', (e) => {
+  if (STATE.started) {
+    emitStardust(e.clientX, e.clientY);
+  }
+});
+
+garden.addEventListener('touchmove', (e) => {
+  if (STATE.started) {
+    const touch = e.touches[0];
+    emitStardust(touch.clientX, touch.clientY);
+  }
+}, { passive: true });
+
+// Stardust from garden background when not on soil
+document.addEventListener('mousemove', (e) => {
+  if (STATE.started && e.target === garden || e.target === canvas) {
+    emitStardust(e.clientX, e.clientY);
+  }
+});
+
+// Add a README
+console.log('🌙 For Akiva, With Love');
+console.log('A garden of memories, grown just for you.');
+console.log('Drop photos into assets/photos/ (1.jpg, 2.jpg, ... 14.jpg)');
+console.log('Add Mirrors by Justin Timberlake at assets/audio/mirrors.mp3');
+</script>
+</body>
+</html>
