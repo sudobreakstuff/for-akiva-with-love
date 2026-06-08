@@ -83,11 +83,15 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 #hint .spark{display:inline-block;animation:float 2.5s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 #by{position:fixed;bottom:0.7rem;left:0;width:100%;text-align:center;z-index:3;pointer-events:none;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(0.7rem,1.8vw,1rem);color:rgba(245,240,232,0.25);letter-spacing:0.12em;transition:opacity 2s ease}
+#by .h{display:inline-block;animation:byHeart 3s ease-in-out infinite;font-size:0.5em;vertical-align:middle;margin:0 0.3em}
+@keyframes byHeart{0%,100%{transform:scale(0.8);opacity:0.3}50%{transform:scale(1.2);opacity:0.8}}
 /* === VIGNETTE === */
 #garden .v{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;background:radial-gradient(ellipse 70% 60% at 50% 50%,transparent 40%,rgba(3,5,10,0.5) 100%)}
 @keyframes rayPulse{0%,100%{opacity:0.35}50%{opacity:0.7}}
 #garden .ray{position:absolute;top:-2%;right:10%;width:120px;height:80%;pointer-events:none;z-index:1;background:linear-gradient(180deg,rgba(255,248,235,0.02) 0%,rgba(255,240,220,0.01) 30%,transparent 70%);transform:rotate(12deg);transform-origin:top center;animation:rayPulse 8s ease-in-out infinite alternate}
 #prg{position:fixed;top:0.8rem;left:0.8rem;z-index:6;pointer-events:none;font-weight:300;font-size:0.6rem;color:rgba(245,240,232,0.12);letter-spacing:0.08em}
+#prg .sp{display:inline-block;animation:prgSpin 4s linear infinite;font-size:0.5em;margin-right:0.4em;vertical-align:middle}
+@keyframes prgSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
 #sndTgl{position:fixed;top:0.7rem;right:0.7rem;z-index:12;width:30px;height:30px;border-radius:50%;border:1px solid rgba(245,240,232,0.08);background:rgba(245,240,232,0.03);color:rgba(245,240,232,0.25);font-size:0.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s;font-family:'Inter',sans-serif;line-height:1;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
 #sndTgl:hover{background:rgba(245,240,232,0.06);color:rgba(245,240,232,0.5);border-color:rgba(245,240,232,0.12)}
 #sndTgl.muted{color:rgba(245,240,232,0.1);border-color:rgba(245,240,232,0.04)}
@@ -224,9 +228,9 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
   <div class="hint">tap anywhere</div>
 </div>
 <div id="hint"><span class="spark">✦</span> tap the earth to plant a seed <span class="spark">✦</span></div>
-<div id="prg"><span id="bloomN">0</span>&thinsp;/&thinsp;<span id="totalN">9</span></div>
+<div id="prg"><span class="sp">✦</span><span id="bloomN">0</span>&thinsp;/&thinsp;<span id="totalN">9</span></div>
 <div id="sndTgl" onclick="toggleSound()">&#9835;</div>
-<div id="by">made by Shahid for Akiva</div>
+<div id="by"><span class="h">&hearts;</span> made by Shahid for Akiva <span class="h">&hearts;</span></div>
 <div id="card">
   <div class="box">
     <button class="close" id="cardX">&#10005;</button>
