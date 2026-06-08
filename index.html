@@ -389,7 +389,7 @@ function openCard(i){
   document.getElementById('bloomN').textContent=S.bloomed;
   if(S.bloomed>=FLOWERS.length)setTimeout(()=>showFinale(),1200);
 }
-function showFinale(){if(S.finale)return;S.finale=true;document.getElementById('finale').classList.add('show');if(S.aGain)S.aGain.gain.linearRampToValueAtTime(0,S.aCtx.currentTime+2);for(let i=0;i<6;i++)setTimeout(()=>{brst(W*0.5+(Math.random()-0.5)*200,H*0.3+(Math.random()-0.5)*120,'#ffd700',30)},i*400)}
+function showFinale(){if(S.finale)return;S.finale=true;document.getElementById('finale').classList.add('show');for(let i=0;i<6;i++)setTimeout(()=>{brst(W*0.5+(Math.random()-0.5)*200,H*0.3+(Math.random()-0.5)*120,'#ffd700',30)},i*400)}
 function initAudio(){try{S.aCtx=new(window.AudioContext||window.webkitAudioContext)();S.aGain=S.aCtx.createGain();S.aGain.gain.value=0;S.aGain.connect(S.aCtx.destination);fetch('assets/audio/ranjha-flute.mp3').then(r=>r.arrayBuffer()).then(b=>S.aCtx.decodeAudioData(b)).then(d=>{S.aBuf=d;S.aOk=true}).catch(()=>{})}catch(e){}}
 function startAudio(){if(S.aPlay)return;if(!S.aBuf){setTimeout(startAudio,250);return}S.aPlay=true;try{const s=S.aCtx.createBufferSource();s.buffer=S.aBuf;s.loop=true;s.loopStart=2;s.loopEnd=S.aBuf.duration;s.connect(S.aGain);s.start(0,2);S.aGain.gain.setValueAtTime(0.15,S.aCtx.currentTime);S.aSource=s}catch(e){}try{const o=S.aCtx.createOscillator(),g=S.aCtx.createGain();o.type='sine';o.frequency.value=196;g.gain.setValueAtTime(0.08,S.aCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,S.aCtx.currentTime+4.5);o.connect(g);g.connect(S.aCtx.destination);o.start(S.aCtx.currentTime);o.stop(S.aCtx.currentTime+5)}catch(e){}}
 function fadeOutAudio(){if(!S.aGain||!S.aPlay)return;S.aGain.gain.linearRampToValueAtTime(0,S.aCtx.currentTime+2)}
