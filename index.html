@@ -156,22 +156,22 @@ function saveState(){try{localStorage.setItem('akivaGarden',JSON.stringify({next
 // ============================================================
 const cv=document.getElementById('c'),ctx=cv.getContext('2d');
 let W,H;
+// Array declarations MUST come before any function calls
+let stars=[];
+let flies=[];
+let dust=[];
+let burst=[];
 function resize(){const d=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);initStars()}
 resize();addEventListener('resize',resize);
-// Stars
-let stars=[];
 function initStars(){stars=[];for(let i=0;i<100;i++)stars.push({x:Math.random()*W,y:Math.random()*H*0.5,r:0.4+Math.random()*1.2,op:0.15+Math.random()*0.7,ph:Math.random()*6.28,sp:0.2+Math.random()*0.6})}
 // Fireflies
-let flies=[];
 function initFlies(){const n=Math.min(18,10+S.bloomed*0.6);while(flies.length<n)flies.push(new Fly());while(flies.length>n)flies.pop()}
 class Fly{constructor(){this.reset()}reset(){this.x=Math.random()*W;this.y=Math.random()*H*0.75;this.vx=(Math.random()-0.5)*0.2;this.vy=(Math.random()-0.5)*0.12;this.r=1+Math.random()*2;this.ph=Math.random()*6.28;this.op=0.2+Math.random()*0.5}
 update(){this.x+=this.vx+Math.sin(Date.now()*0.001+this.ph)*0.06;this.y+=this.vy+Math.cos(Date.now()*0.0012+this.ph)*0.05;if(this.x<-30||this.x>W+30||this.y<-30||this.y>H+30)this.reset()}
 draw(){const p=0.5+0.5*Math.sin(Date.now()*0.002+this.ph),a=this.op*p,rr=this.r*(0.7+0.6*p);const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,rr*6);g.addColorStop(0,`rgba(240,215,140,${a})`);g.addColorStop(0.2,`rgba(200,185,230,${a*0.3})`);g.addColorStop(1,'rgba(200,185,230,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(this.x,this.y,rr*6,0,6.28);ctx.fill();ctx.fillStyle=`rgba(255,248,230,${a*0.85})`;ctx.beginPath();ctx.arc(this.x,this.y,rr*0.4,0,6.28);ctx.fill()}}
 // Stardust trail
-let dust=[];
 function sd(x,y){if(!S.started)return;for(let i=0;i<2;i++)dust.push({x:x+(Math.random()-0.5)*14,y:y+(Math.random()-0.5)*8,vx:(Math.random()-0.5)*1.2,vy:-Math.random()*1.2-0.2,life:1,decay:0.006+Math.random()*0.01,r:0.8+Math.random()*1.8});if(dust.length>120)dust.splice(0,dust.length-120)}
 // Burst
-let burst=[];
 function brst(x,y,color,n){n=n||22;for(let i=0;i<n;i++){const a=Math.random()*6.28,sp=0.8+Math.random()*3;burst.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-0.8,life:1,decay:0.01+Math.random()*0.016,r:1.5+Math.random()*2.5,color:color||'#f0d78c'})}}
 // Animation loop
 function anim(){ctx.clearRect(0,0,W,H);
