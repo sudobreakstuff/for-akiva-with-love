@@ -87,9 +87,11 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 .flower.rose .stem::after{right:-3px;width:12px;height:6px;background:#2a5a24}
 .flower.rose .sprout{width:6px;box-shadow:0 0 12px rgba(126,200,126,0.2)}
 .flower .head.rose{width:120px;height:120px;left:-36px;bottom:calc(var(--stem-h,120px));border-radius:50% 48% 52% 50% / 55% 52% 48% 45%;box-shadow:0 0 60px 15px rgba(255,215,140,0.12),0 0 120px 40px rgba(255,215,140,0.04)}
+.flower .head.rose svg{width:100%;height:100%;display:block;filter:drop-shadow(0 0 30px rgba(255,215,140,0.15))}
 .flower.rose-bud .head.rose{opacity:1;transform:scale(.3) rotate(-8deg);animation:roseReveal 3.5s cubic-bezier(.34,1.56,.64,1) forwards}
 @keyframes roseReveal{0%{opacity:0;transform:scale(.15) rotate(-12deg)}30%{opacity:1;transform:scale(.5) rotate(-5deg)}70%{opacity:1;transform:scale(1.08) rotate(1deg)}100%{opacity:1;transform:scale(1) rotate(0deg)}}
 .flower .head.rose::after{width:24px;height:24px;margin:-12px 0 0 -12px;background:radial-gradient(circle,#fff 0%,#f5e6d0 60%,transparent 100%);box-shadow:0 0 20px rgba(255,255,255,0.2)}
+.flower.rose-bloom .head.rose,.flower.rose-bloom .head.rose svg{opacity:1;transform:scale(1)}
 .flower.rose .tap-hint{bottom:calc(var(--stem-h,120px) + 130px);width:80px;left:-14px;font-size:.9rem}
 .flower.rose-bloom .tap-hint{opacity:1;animation:hintFloat 2.5s ease-in-out infinite}
 /* === TAP HINT === */
@@ -260,10 +262,14 @@ function makeHead(c,cc,g){
   return el
 }
 function makeRose(){
-  const el=document.createElement('div');el.className='head rose';
-  let s='';const n=24,st=360/n,w=8;
-  for(let i=0;i<n;i++){const a=i*st,c=i%3===0?'#fff8f0':i%3===1?'#f5ece0':'#faf0e5';s+=`${c} ${a}deg ${a+w}deg,transparent ${a+w}deg ${a+st}deg${i<n-1?',':''}`}
-  el.style.background=`radial-gradient(circle at 50% 50%,#fff 10px,#f5e6d0 14px,transparent 16px),conic-gradient(from 0deg,${s})`;
+  const el=document.createElement('div');el.className='head rose svg';
+  const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');
+  svg.setAttribute('viewBox','0 0 100 100');
+  const d=`<defs><radialGradient id="r1"><stop offset="0%" stop-color="#fff"/><stop offset="60%" stop-color="#fff8f0"/><stop offset="100%" stop-color="#f5ece0"/></radialGradient><radialGradient id="r2"><stop offset="0%" stop-color="#faf0e5"/><stop offset="100%" stop-color="#ebd8c4"/></radialGradient></defs>`;
+  svg.innerHTML=d;
+  const layers=[{d:'M50,50 C18,32 12,8 35,3 C45,0 50,7 50,12 C50,7 55,0 65,3 C88,8 82,32 50,50',f:'url(#r2)',r:[0,36,72,108,144,180,216,252,288,324]},{d:'M50,50 C24,36 18,14 40,8 C47,5 50,10 50,14 C50,10 53,5 60,8 C82,14 76,36 50,50',f:'url(#r1)',r:[18,78,138,198,258,318]},{d:'M50,50 C32,40 28,22 44,16 C48,14 50,18 50,20 C50,18 52,14 56,16 C72,22 68,40 50,50',f:'#fff8f0',r:[0,60,120,180,240,300]},{d:'M50,50 C40,44 36,32 47,28 C49,27 50,30 50,32 C50,30 51,27 53,28 C64,32 60,44 50,50',f:'#fff',r:[30,150,270]}];
+  for(const l of layers)for(const a of l.r){const p=document.createElementNS(ns,'path');p.setAttribute('d',l.d);p.setAttribute('fill',l.f);p.setAttribute('transform','rotate('+a+' 50 50)');svg.appendChild(p)}
+  el.appendChild(svg);
   return el
 }
 const soil=document.getElementById('soil');
