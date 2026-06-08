@@ -15,7 +15,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-even
 #garden .ground-layer{position:absolute;bottom:0;left:0;right:0;height:25%;pointer-events:none;background:linear-gradient(0deg,rgba(10,15,8,0.5) 0%,transparent 100%)}
 .mist{position:absolute;bottom:8%;left:-10%;right:-10%;height:20%;pointer-events:none;background:radial-gradient(ellipse 60% 100% at 20% 100%,rgba(120,140,110,0.05) 0%,transparent 70%),radial-gradient(ellipse 50% 80% at 75% 100%,rgba(100,130,120,0.04) 0%,transparent 70%);animation:mistDrift 25s ease-in-out infinite alternate}
 @keyframes mistDrift{0%{transform:translateX(-2%) scaleX(1)}100%{transform:translateX(2%) scaleX(1.05)}}
-#ttl{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(8,11,24,0.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:opacity 1.2s ease,visibility 1.2s ease;cursor:pointer}
+#ttl{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(8,11,24,0.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:opacity 0.3s ease,visibility 0.3s ease;cursor:pointer}
 #ttl.hide{opacity:0;visibility:hidden;pointer-events:none}
 #ttl h1{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(2rem,7vw,4rem);text-align:center;line-height:1.25;color:#f5f0e8;letter-spacing:0.04em}
 #ttl h1 .nm{display:block;font-style:italic;margin-top:0.1em;background:linear-gradient(135deg,#f0d78c,#e8c4a0,#d4a5ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -293,7 +293,10 @@ function swellAudio(){if(!S.audio||!S.aPlay)return;let v=0.15;const iv=setInterv
 function interact(x,y){
   if(!S.started){
     S.started=true;
-    document.getElementById('ttl').classList.add('hide');
+    const ttl=document.getElementById('ttl');
+    ttl.style.background='transparent';
+    ttl.style.backdropFilter='none';
+    ttl.classList.add('hide');
     startAudio();
     if(S.bloomed===0){S.planting=true;brst(x+(Math.random()-0.5)*30,y+(Math.random()-0.5)*30,'#f0d78c',22);makeFlower(FLOWERS[0],0,x,y)}
     return
@@ -338,7 +341,7 @@ function restore(){
 // INIT
 // ============================================================
 loadState();initAudio();
-if(S.bloomed>0){S.started=true;document.getElementById('ttl').classList.add('hide');restore();startAudio()}
+if(S.bloomed>0){S.started=true;const tl=document.getElementById('ttl');tl.style.background='transparent';tl.style.backdropFilter='none';tl.classList.add('hide');restore();startAudio()}
 </script>
 </body>
 </html>
