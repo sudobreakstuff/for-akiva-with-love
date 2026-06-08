@@ -308,7 +308,7 @@ function openCard(i){
   if(S.bloomed>=FLOWERS.length)setTimeout(()=>showFinale(),1200);
 }
 function showFinale(){if(S.finale)return;S.finale=true;document.getElementById('finale').classList.add('show');swellAudio();for(let i=0;i<6;i++)setTimeout(()=>{brst(W*0.5+(Math.random()-0.5)*200,H*0.3+(Math.random()-0.5)*120,'#ffd700',30)},i*400)}
-function initAudio(){S.audio=new Audio();S.audio.src='assets/audio/mirrors.mp3';S.audio.loop=false;S.audio.volume=0;S.audio.preload='auto';S.audio.addEventListener('canplaythrough',()=>S.aOk=true);S.audio.addEventListener('error',()=>{})}
+function initAudio(){S.audio=new Audio();S.audio.src='assets/audio/ranjha-flute.mp3';S.audio.loop=false;S.audio.volume=0;S.audio.preload='auto';S.audio.addEventListener('canplaythrough',()=>S.aOk=true);S.audio.addEventListener('error',()=>{})}
 function startAudio(){if(!S.audio||S.aPlay)return;S.aPlay=true;try{S.audio.currentTime=0;S.audio.play().catch(()=>{})}catch(e){}let v=0;const iv=setInterval(()=>{v+=0.035;if(v>=0.15){v=0.15;clearInterval(iv)}S.audio.volume=v},150);if(S.audio)S.audio.addEventListener('ended',()=>{S.audio.currentTime=0;S.audio.play().catch(()=>{})})}
 function swellAudio(){if(!S.audio||!S.aPlay)return;let v=0.15;const iv=setInterval(()=>{v+=0.03;if(v>=0.45){v=0.45;clearInterval(iv)}S.audio.volume=v},200)}
 function tapTitle(e){
