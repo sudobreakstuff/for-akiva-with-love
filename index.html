@@ -68,16 +68,16 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 .flower .sprout::before{content:'';position:absolute;top:-1px;left:-4px;width:12px;height:8px;background:#7ec87e;border-radius:50%;box-shadow:0 0 12px rgba(126,200,126,0.4);transform:scale(0)}
 .flower.seed .sprout::before{animation:leafPop 0.5s ease-out 0.15s forwards}
 @keyframes leafPop{0%{transform:scale(0)}100%{transform:scale(1)}}
-.flower .stem{position:absolute;bottom:0;left:25px;width:3px;height:var(--stem-h,55px);background:linear-gradient(to top,#3a6a30,#5a8a4e);border-radius:2px;transform-origin:bottom center;opacity:0;will-change:transform}
+.flower .stem{position:absolute;bottom:0;left:25px;width:3px;height:var(--stem-h,55px);background:linear-gradient(to top,#3a6a30,#5a8a4e);border-radius:2px;transform-origin:bottom center;opacity:1;will-change:transform}
 .flower .stem::before{content:'';position:absolute;left:-2px;top:36%;width:10px;height:6px;background:#5a8a4e;border-radius:50% 0 50% 0;transform:rotate(-20deg)}
 .flower .stem::after{content:'';position:absolute;right:-2px;top:52%;width:9px;height:5px;background:#4a7c3f;border-radius:0 50% 0 50%;transform:rotate(15deg)}
-.flower.bloom .stem{opacity:1;animation:sway var(--sway,3.5s) ease-in-out infinite}
+.flower.bloom .stem{animation:sway var(--sway,3.5s) ease-in-out infinite}
 @keyframes sway{0%,100%{transform:rotate(-1.2deg)}50%{transform:rotate(1.2deg)}}
 /* === FLOWER HEAD (conic-gradient) === */
-.flower .head{position:absolute;bottom:calc(var(--stem-h,55px));left:2px;width:48px;height:48px;border-radius:50%;opacity:0;transform:scale(0);transform-origin:bottom center;will-change:transform,opacity;box-shadow:0 0 30px 4px var(--g, rgba(255,215,0,0.15))}
+.flower .head{position:absolute;bottom:calc(var(--stem-h,55px));left:2px;width:48px;height:48px;border-radius:50%;opacity:0;transform:scale(0);transform-origin:bottom center;will-change:transform,opacity;box-shadow:0 0 30px 4px var(--g, rgba(255,215,0,0.15));transition:opacity 0.55s ease 0.1s,transform 0.55s cubic-bezier(.34,1.56,.64,1) 0.1s}
+.flower.seed .head{opacity:0.5;transform:scale(0.2)}
 .flower .head.hg{width:64px;height:64px;left:-6px;bottom:calc(var(--stem-h,70px))}
-.flower.bloom .head{opacity:1;transform:scale(1);animation:bloomPop 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards}
-@keyframes bloomPop{0%{transform:scale(0);opacity:0}50%{transform:scale(1.15);opacity:1}100%{transform:scale(1);opacity:1}}
+.flower.bloom .head{opacity:1;transform:scale(1)}
 .flower .head::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;background:inherit;filter:blur(10px);opacity:0.4;z-index:-1}
 .flower .head::after{content:'';position:absolute;top:50%;left:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--cc,#f5f0e8);z-index:2;box-shadow:0 0 8px rgba(255,255,255,0.25)}
 .flower .head.hg::after{width:18px;height:18px;margin:-9px 0 0 -9px}
@@ -312,10 +312,10 @@ function makeFlower(data,i,x,y){
   el.appendChild(head);
   garden.appendChild(el);
   flowers.push({el,index:i,data,state:'seed',x,y});
-  const t=rose?3500:900;
+  const t=rose?700:900;
   setTimeout(()=>{
     el.classList.remove('seed');
-    if(rose){el.classList.add('rose-bud');setTimeout(()=>{el.classList.remove('rose-bud');el.classList.add('rose-bloom');brst(x+headSize/2+2,y-sh*0.3,'rgba(255,215,140,0.5)',24);setTimeout(()=>brst(x+headSize/2+2,y-sh*0.3,'#fff8f0',30),800)},2800)}else{el.classList.add('bloom');brst(x+headSize/2+2,y-sh*0.3,data.g||'#f0d78c',16);if(big)setTimeout(()=>brst(x+headSize/2+2,y-sh*0.3,'#ffd700',30),300)}
+    if(rose){el.classList.add('rose-bud');setTimeout(()=>{el.classList.remove('rose-bud');el.classList.add('rose-bloom');brst(x+headSize/2+2,y-sh*0.3,'rgba(255,215,140,0.5)',24);setTimeout(()=>brst(x+headSize/2+2,y-sh*0.3,'#fff8f0',30),800)},3500)}else{el.classList.add('bloom');brst(x+headSize/2+2,y-sh*0.3,data.g||'#f0d78c',16);if(big)setTimeout(()=>brst(x+headSize/2+2,y-sh*0.3,'#ffd700',30),300)}
     S.next=i+1;S.planting=false;
     if(S.next<FLOWERS.length)hint.classList.add('show');
     el.addEventListener('click',e=>{e.stopPropagation();openCard(i)});
