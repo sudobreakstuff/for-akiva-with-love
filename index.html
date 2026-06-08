@@ -49,7 +49,6 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 #ttl h1{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(1.8rem,6.5vw,3.5rem);text-align:center;line-height:1.2;color:#f5f0e8;letter-spacing:0.04em}
 #ttl h1 .nm{display:block;font-style:italic;margin-top:0.08em;background:linear-gradient(135deg,#f0d78c,#e8c4a0,#d4a5ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 #ttl .sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(0.85rem,1.8vw,1.1rem);color:rgba(245,240,232,0.3);margin-top:1em;letter-spacing:0.06em}
-#ttl .by{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(0.5rem,1vw,0.65rem);color:rgba(245,240,232,0.12);margin-top:2.5em;letter-spacing:0.12em}
 #ttl .hint{position:absolute;bottom:12%;font-size:clamp(0.55rem,1vw,0.7rem);font-weight:300;color:rgba(245,240,232,0.15);letter-spacing:0.22em;text-transform:uppercase;animation:pulse 3.5s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:0.15}50%{opacity:0.6}}
 #soil{position:absolute;bottom:0;left:0;right:0;height:50%;z-index:4;cursor:pointer}
@@ -57,6 +56,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 #hint.show{opacity:1;animation:pulse 4s ease-in-out infinite}
 #hint .spark{display:inline-block;animation:float 2.5s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+#by{position:fixed;bottom:0.7rem;left:0;width:100%;text-align:center;z-index:3;pointer-events:none;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(0.5rem,1.2vw,0.7rem);color:rgba(245,240,232,0.08);letter-spacing:0.15em;transition:opacity 2s ease}
 #prg{position:fixed;top:0.8rem;left:0.8rem;z-index:6;pointer-events:none;font-weight:300;font-size:0.6rem;color:rgba(245,240,232,0.12);letter-spacing:0.08em}
 #sndTgl{position:fixed;top:0.7rem;right:0.7rem;z-index:12;width:30px;height:30px;border-radius:50%;border:1px solid rgba(245,240,232,0.08);background:rgba(245,240,232,0.03);color:rgba(245,240,232,0.25);font-size:0.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s;font-family:'Inter',sans-serif;line-height:1;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
 #sndTgl:hover{background:rgba(245,240,232,0.06);color:rgba(245,240,232,0.5);border-color:rgba(245,240,232,0.12)}
@@ -189,12 +189,12 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 <div id="ttl" onclick="tapTitle(event)" ontouchstart="tapTitle(event)">
   <h1>For <span class="nm">Akiva, With Love</span></h1>
   <div class="sub">a garden of memories, growing just for you</div>
-  <div class="by">made by Shahid for Akiva</div>
   <div class="hint">tap anywhere</div>
 </div>
 <div id="hint"><span class="spark">✦</span> tap the earth to plant a seed <span class="spark">✦</span></div>
 <div id="prg"><span id="bloomN">0</span>&thinsp;/&thinsp;<span id="totalN">9</span></div>
 <div id="sndTgl" onclick="toggleSound()">&#9835;</div>
+<div id="by">made by Shahid for Akiva</div>
 <div id="card">
   <div class="box">
     <button class="close" id="cardX">&#10005;</button>
