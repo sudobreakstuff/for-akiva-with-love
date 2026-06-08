@@ -250,6 +250,7 @@ function makeFlower(data,i,x,y){
     el.classList.remove('seed');el.classList.add('bloom');
     brst(x+24,y-sh*0.35,data.g||'#f0d78c',16);
     S.next=i+1;S.planting=false;saveState();updateProg();initFlies();
+    if(S.next<FLOWERS.length)hint.classList.add('show');
     el.addEventListener('click',e=>{e.stopPropagation();openCard(i)});
     el.addEventListener('touchend',e=>{e.stopPropagation();openCard(i)});
   },1000);
@@ -293,11 +294,11 @@ function interact(x,y){
   if(!S.started){
     S.started=true;
     document.getElementById('ttl').classList.add('hide');
-    hint.classList.add('show');
     startAudio();
-    if(S.bloomed===0){setTimeout(()=>{brst(W*0.5+(Math.random()-0.5)*50,H*0.5+(Math.random()-0.5)*40,'#f0d78c',22);makeFlower(FLOWERS[0],0,W*0.5,H*0.5)},600)}
+    if(S.bloomed===0){S.planting=true;brst(x+(Math.random()-0.5)*30,y+(Math.random()-0.5)*30,'#f0d78c',22);makeFlower(FLOWERS[0],0,x,y)}
     return
   }
+  if(S.planting){brst(x+(Math.random()-0.5)*12,y+(Math.random()-0.5)*12,'rgba(240,215,140,0.3)',6);return}
   plant(x,y)
 }
 soil.addEventListener('click',e=>{const r=garden.getBoundingClientRect();interact(e.clientX-r.left,e.clientY-r.top)});
