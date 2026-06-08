@@ -84,13 +84,13 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 .flower .head::after{content:'';position:absolute;top:50%;left:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--cc,#f5f0e8);z-index:2;box-shadow:0 0 8px rgba(255,255,255,0.25)}
 .flower .head.hg::after{width:18px;height:18px;margin:-9px 0 0 -9px}
 /* === ROSE === */
-.flower.rose .stem{width:5px;background:linear-gradient(to top,#1a3a18,#3a6a30);box-shadow:0 0 15px rgba(58,106,48,0.15)}
+.flower.rose .stem{width:5px;left:58px;background:linear-gradient(to top,#1a3a18,#3a6a30);box-shadow:0 0 15px rgba(58,106,48,0.15)}
 .flower.rose .stem::before{left:-3px;width:14px;height:8px;background:#3a6a30}
 .flower.rose .stem::after{right:-3px;width:12px;height:6px;background:#2a5a24}
 .flower.rose .sprout{width:6px;box-shadow:0 0 12px rgba(126,200,126,0.2)}
 .flower.rose.seed .stem{opacity:1;animation:stemUp 0.7s ease-out forwards}
 .flower.rose-bud .stem,.flower.rose-bloom .stem{opacity:1;height:var(--stem-h,120px);animation:sway var(--sway,3.5s) ease-in-out infinite}
-.flower .head.rose{width:120px;height:120px;left:-36px;bottom:calc(var(--stem-h,120px));border-radius:50% 48% 52% 50% / 55% 52% 48% 45%;box-shadow:0 0 60px 15px rgba(255,215,140,0.12),0 0 120px 40px rgba(255,215,140,0.04)}
+.flower .head.rose{width:120px;height:120px;left:0;bottom:calc(var(--stem-h,120px));border-radius:50% 48% 52% 50% / 55% 52% 48% 45%;box-shadow:0 0 60px 15px rgba(255,215,140,0.12),0 0 120px 40px rgba(255,215,140,0.04)}
 .flower .head.rose svg{width:100%;height:100%;display:block;filter:drop-shadow(0 0 30px rgba(255,215,140,0.15))}
 .flower.rose-bud .head.rose{opacity:1;transform:scale(.3) rotate(-8deg);animation:roseReveal 3.5s cubic-bezier(.34,1.56,.64,1) forwards}
 @keyframes roseReveal{0%{opacity:0;transform:scale(.15) rotate(-12deg)}30%{opacity:1;transform:scale(.5) rotate(-5deg)}70%{opacity:1;transform:scale(1.08) rotate(1deg)}100%{opacity:1;transform:scale(1) rotate(0deg)}}
@@ -359,7 +359,7 @@ function openCard(i){
 }
 function showFinale(){if(S.finale)return;S.finale=true;document.getElementById('finale').classList.add('show');for(let i=0;i<6;i++)setTimeout(()=>{brst(W*0.5+(Math.random()-0.5)*200,H*0.3+(Math.random()-0.5)*120,'#ffd700',30)},i*400)}
 function initAudio(){S.audio=new Audio();S.audio.src='assets/audio/ranjha-flute.mp3';S.audio.loop=false;S.audio.volume=0;S.audio.preload='auto';S.audio.addEventListener('canplaythrough',()=>S.aOk=true);S.audio.addEventListener('error',()=>{})}
-function startAudio(){if(!S.audio||S.aPlay)return;S.aPlay=true;try{S.audio.currentTime=0;S.audio.play().catch(()=>{})}catch(e){}try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=196;g.gain.setValueAtTime(0.035,a.currentTime);g.gain.exponentialRampToValueAtTime(0.001,a.currentTime+3.2);o.connect(g);g.connect(a.destination);o.start(a.currentTime);o.stop(a.currentTime+3.5)}catch(e){}let v=0;const iv=setInterval(()=>{v+=0.06;if(v>=0.15){v=0.15;clearInterval(iv)}S.audio.volume=v},80);if(S.audio)S.audio.addEventListener('ended',()=>{S.audio.currentTime=0;S.audio.play().catch(()=>{})})}
+function startAudio(){if(!S.audio||S.aPlay)return;S.aPlay=true;try{S.audio.currentTime=0;S.audio.play().catch(()=>{})}catch(e){}try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=196;g.gain.setValueAtTime(0.08,a.currentTime);g.gain.exponentialRampToValueAtTime(0.001,a.currentTime+4.5);o.connect(g);g.connect(a.destination);o.start(a.currentTime);o.stop(a.currentTime+5)}catch(e){}let v=0;const iv=setInterval(()=>{v+=0.06;if(v>=0.15){v=0.15;clearInterval(iv)}S.audio.volume=v},80);if(S.audio)S.audio.addEventListener('ended',()=>{S.audio.currentTime=0;S.audio.play().catch(()=>{})})}
 function fadeOutAudio(){if(!S.audio||!S.aPlay)return;let v=Math.min(S.audio.volume||0.15,0.15);const iv=setInterval(()=>{v-=0.006;if(v<=0){v=0;clearInterval(iv);try{S.audio.pause()}catch(e){}}S.audio.volume=Math.max(v,0)},80)}
 function tapTitle(e){
   if(e&&e.preventDefault)e.preventDefault();if(S.started)return;
