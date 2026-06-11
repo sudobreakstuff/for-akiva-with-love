@@ -331,9 +331,17 @@ function makeRose(){
   const el=document.createElement('div');el.className='head rose svg';
   const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');
   svg.setAttribute('viewBox','0 0 100 100');
-  const d=`<defs><radialGradient id="r1"><stop offset="0%" stop-color="#fff"/><stop offset="60%" stop-color="#fff8f0"/><stop offset="100%" stop-color="#f5ece0"/></radialGradient><radialGradient id="r2"><stop offset="0%" stop-color="#faf0e5"/><stop offset="100%" stop-color="#ebd8c4"/></radialGradient></defs>`;
+  const d=`<defs><radialGradient id="rg1"><stop offset="0%" stop-color="#faf0e8"/><stop offset="100%" stop-color="#ebd8c0"/></radialGradient><radialGradient id="rg2"><stop offset="0%" stop-color="#fff8f0"/><stop offset="100%" stop-color="#f5e8d8"/></radialGradient><radialGradient id="rg3"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#faf0e0"/></radialGradient></defs>`;
   svg.innerHTML=d;
-  const layers=[{d:'M50,50 C18,32 12,8 35,3 C45,0 50,7 50,12 C50,7 55,0 65,3 C88,8 82,32 50,50',f:'url(#r2)',r:[0,36,72,108,144,180,216,252,288,324]},{d:'M50,50 C24,36 18,14 40,8 C47,5 50,10 50,14 C50,10 53,5 60,8 C82,14 76,36 50,50',f:'url(#r1)',r:[18,78,138,198,258,318]},{d:'M50,50 C32,40 28,22 44,16 C48,14 50,18 50,20 C50,18 52,14 56,16 C72,22 68,40 50,50',f:'#fff8f0',r:[0,60,120,180,240,300]},{d:'M50,50 C40,44 36,32 47,28 C49,27 50,30 50,32 C50,30 51,27 53,28 C64,32 60,44 50,50',f:'#fff',r:[30,150,270]}];
+  const layers=[
+    {d:'M50,38 C8,34 2,2 50,-4 C98,2 92,34 50,38',f:'url(#rg1)',r:[0,60,120,180,240,300]},
+    {d:'M50,42 C16,38 10,8 50,2 C90,8 84,38 50,42',f:'url(#rg1)',r:[30,90,150,210,270,330]},
+    {d:'M50,44 C24,41 20,14 50,8 C80,14 76,41 50,44',f:'url(#rg2)',r:[0,60,120,180,240,300]},
+    {d:'M50,46 C30,44 28,20 50,14 C72,20 70,44 50,46',f:'url(#rg2)',r:[30,90,150,210,270,330]},
+    {d:'M50,48 C34,46 32,28 50,22 C68,28 66,46 50,48',f:'url(#rg3)',r:[0,60,120,180,240,300]},
+    {d:'M50,49 C38,48 36,36 50,30 C64,36 62,48 50,49',f:'url(#rg3)',r:[36,108,180,252,324]},
+    {d:'M50,50 C40,48 40,40 50,36 C60,40 60,48 50,50',f:'#fff',r:[0,72,144,216,288]}
+  ];
   for(const l of layers)for(const a of l.r){const p=document.createElementNS(ns,'path');p.setAttribute('d',l.d);p.setAttribute('fill',l.f);p.setAttribute('transform','rotate('+a+' 50 50)');svg.appendChild(p)}
   el.appendChild(svg);
   return el
