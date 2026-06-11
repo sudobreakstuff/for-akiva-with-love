@@ -235,7 +235,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
   <div class="box">
     <button class="close" id="cardX">&#10005;</button>
     <span class="num" id="cardNum">flower 1 of 14</span>
-    <div class="photo"><span class="ph" id="cardPh">✦ a memory awaits</span><img id="cardImg" src="" alt=""></div>
+    <div class="photo"><span class="ph" id="cardPh">✦</span><img id="cardImg" src="" alt="" loading="lazy" decoding="async"></div>
     <h2 id="cardT"></h2>
     <div class="dt" id="cardD"></div>
     <div class="ms" id="cardM"></div>
@@ -391,9 +391,10 @@ function openCard(i){
   document.getElementById('cardD').textContent=data.d;
   document.getElementById('cardM').textContent=data.m;
   const img=document.getElementById('cardImg'),ph=document.getElementById('cardPh');
-  img.src=`assets/photos/${i+1}.png`;
+  img.style.display='none';ph.style.display='flex';ph.textContent='✦';
+  img.src='';img.src=`assets/photos/${i+1}.png`;
   img.onload=()=>{ph.style.display='none';img.style.display='block'};
-  img.onerror=()=>{ph.style.display='block';img.style.display='none';ph.textContent='✦ a memory awaits'};
+  img.onerror=()=>{ph.style.display='flex';img.style.display='none';ph.textContent='✦ a memory awaits'};
   if(S.bloomed<=i){S.bloomed=Math.max(S.bloomed,i+1);initFlies()}
   document.getElementById('card').classList.add('show');
   document.getElementById('bloomN').textContent=S.bloomed;
