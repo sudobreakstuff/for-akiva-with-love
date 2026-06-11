@@ -392,7 +392,7 @@ function openCard(i){
   document.getElementById('cardD').textContent=data.d;
   document.getElementById('cardM').textContent=data.m;
   const img=document.getElementById('cardImg'),ph=document.getElementById('cardPh');
-  img.src=`assets/photos/${i+1}.jpg`;
+  img.src=`assets/photos/${i+1}.png`;
   img.onload=()=>{ph.style.display='none';img.style.display='block'};
   img.onerror=()=>{ph.style.display='block';img.style.display='none';ph.textContent='✦ a memory awaits'};
   if(S.bloomed<=i){S.bloomed=Math.max(S.bloomed,i+1);initFlies()}
