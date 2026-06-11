@@ -267,7 +267,7 @@ const FLOWERS = [
   {t:"Wishes",d:"Dreaming together",m:"We talked about the future like it was a garden we were growing together. Where we'd go, what we'd do, who we wanted to become. Every dream we shared felt like planting another seed. And every time I imagined the future, you were there.",c:"#e8a87c",cc:"#c47a5a",s:.8,sh:50,g:"rgba(232,168,124,0.2)"},
   {t:"Forever Us",d:"9 years and counting",m:"This one has no special date and no big story. It's simply because I was thinking of you. Nine years later, and I still feel that same spark from the beginning — only deeper, stronger, and more certain. You are loved completely, endlessly, and without condition. This flower is just because you exist, and because your existence makes my world more beautiful.",c:"#fff8f0",cc:"#fff",s:2.5,sh:120,g:"rgba(255,215,140,0.15)",rose:true}
 ];
-const S={started:false,next:0,bloomed:0,planting:false,finale:false,audio:null,aOk:false,aPlay:false,soundOn:true,_xf:false};
+const S={started:false,next:0,bloomed:0,planting:false,finale:false,audio:null,aOk:false,aPlay:false,soundOn:true,_xf:false,_xv:0};
 const cv=document.getElementById('c'),ctx=cv.getContext('2d');
 let W,H;let stars=[];let flies=[];let dust=[];let burst=[];let shoots=[];let constellations;let aurora=[];let petals=[];let ripples=[];let trail=[];let hearts=[];
 function resize(){const d=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);initStars();initConst();initAurora()}
@@ -306,8 +306,15 @@ function anim(){ctx.clearRect(0,0,W,H);
   for(let i=hearts.length-1;i>=0;i--){const h=hearts[i];h.x+=h.vx;h.y+=h.vy;h.vy+=0.002;h.rot+=h.rotV;h.life-=0.004;if(h.life<=0||h.y<-20){hearts.splice(i,1);continue}ctx.save();ctx.translate(h.x,h.y);ctx.rotate(h.rot);ctx.globalAlpha=Math.min(h.life,0.5);ctx.fillStyle=h.cl;const R=h.r;ctx.beginPath();ctx.moveTo(0,R*0.3);ctx.bezierCurveTo(-R*0.6,-R*0.4,-R*1.2,R*0.3,0,R*0.8);ctx.bezierCurveTo(R*1.2,R*0.3,R*0.6,-R*0.4,0,R*0.3);ctx.fill();ctx.restore()}
   for(let i=trail.length-1;i>=0;i--){const t=trail[i];t.life-=t.dd;if(t.life<=0){trail.splice(i,1);continue}ctx.fillStyle=`rgba(255,240,200,${t.life*0.4})`;ctx.beginPath();ctx.arc(t.x,t.y,t.r*t.life,0,6.28);ctx.fill();ctx.fillStyle=`rgba(255,248,230,${t.life*0.12})`;ctx.beginPath();ctx.arc(t.x,t.y,t.r*t.life*4,0,6.28);ctx.fill()}
   for(let i=dust.length-1;i>=0;i--){const d=dust[i];d.x+=d.vx;d.y+=d.vy;d.vy+=0.012;d.life-=d.decay;if(d.life<=0){dust.splice(i,1);continue}ctx.globalAlpha=d.life*0.5;ctx.fillStyle='#f0d78c';ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,6.28);ctx.fill();ctx.globalAlpha=d.life*0.15;ctx.beginPath();ctx.arc(d.x,d.y,d.r*5,0,6.28);ctx.fill();ctx.globalAlpha=1}
-  for(let i=burst.length-1;i>=0;i--){const b=burst[i];b.x+=b.vx;b.y+=b.vy;b.vy+=0.02;b.life-=b.decay;if(b.life<=0){burst.splice(i,1);continue}ctx.globalAlpha=b.life;ctx.fillStyle=b.color;ctx.beginPath();ctx.arc(b.x,b.y,b.r*(0.4+0.6*b.life),0,6.28);ctx.fill();ctx.globalAlpha=b.life*0.2;ctx.beginPath();ctx.arc(b.x,b.y,b.r*3.5*b.life,0,6.28);ctx.fill();ctx.globalAlpha=1}
-  requestAnimationFrame(anim)}
+   for(let i=burst.length-1;i>=0;i--){const b=burst[i];b.x+=b.vx;b.y+=b.vy;b.vy+=0.02;b.life-=b.decay;if(b.life<=0){burst.splice(i,1);continue}ctx.globalAlpha=b.life;ctx.fillStyle=b.color;ctx.beginPath();ctx.arc(b.x,b.y,b.r*(0.4+0.6*b.life),0,6.28);ctx.fill();ctx.globalAlpha=b.life*0.2;ctx.beginPath();ctx.arc(b.x,b.y,b.r*3.5*b.life,0,6.28);ctx.fill();ctx.globalAlpha=1}
+    if(S.aPlay&&S.audio&&S.audio.duration){
+     const r=S.audio.duration-S.audio.currentTime;
+     if(r<1.8&&S._xf===false&&r>0.3){S._xf='out';S._xv=S.soundOn?S.audio.volume:0}
+     if(!S.soundOn){S.audio.volume=0;if(S._xf==='out'||S._xf==='in'){S.audio.currentTime=2;S._xf=false}}
+     if(S._xf==='out'){S._xv-=0.006;if(S._xv<=0){S._xv=0;S.audio.currentTime=2;S._xf='in'}S.audio.volume=Math.max(S._xv,0)}
+     if(S._xf==='in'){const t=0.15;S._xv+=0.005;if(S._xv>=t){S._xv=t;S._xf=false}S.audio.volume=Math.min(S._xv,t)}
+   }
+   requestAnimationFrame(anim)}
 anim();
 setInterval(()=>{if(S.started&&Math.random()<0.4)spawnShoot()},3500);
 setInterval(()=>{if(S.started)spawnPetal()},2800);
@@ -394,7 +401,7 @@ function openCard(i){
   if(S.bloomed>=FLOWERS.length)setTimeout(()=>showFinale(),1200);
 }
 function showFinale(){if(S.finale)return;S.finale=true;document.getElementById('finale').classList.add('show');for(let i=0;i<6;i++)setTimeout(()=>{brst(W*0.5+(Math.random()-0.5)*200,H*0.3+(Math.random()-0.5)*120,'#ffd700',30)},i*400)}
-function initAudio(){S.audio=new Audio();S.audio.src='assets/audio/ranjha-flute.mp3';S.audio.loop=false;S.audio.volume=0;S.audio.preload='auto';S.audio.addEventListener('canplaythrough',()=>S.aOk=true);S.audio.addEventListener('error',()=>{});S.audio.addEventListener('timeupdate',()=>{if(!S.aPlay||!S.audio.duration||S._xf)return;const r=S.audio.duration-S.audio.currentTime;if(r<1.8&&r>0.4){S._xf=true;let v=S.soundOn?0.15:0;const iv=setInterval(()=>{v-=0.025;if(v<=0){v=0;clearInterval(iv);S.audio.currentTime=2;if(S.soundOn){let vi=0;const iv2=setInterval(()=>{vi+=0.025;if(vi>=0.15){vi=0.15;clearInterval(iv2);S._xf=false}S.audio.volume=vi},60)}else S._xf=false}S.audio.volume=Math.max(v,0)},60)}});S.audio.addEventListener('ended',()=>{if(S._xf)return;S.audio.currentTime=2;S.audio.play().catch(()=>{});if(S.soundOn){let v=0;const iv=setInterval(()=>{v+=0.04;if(v>=0.15){v=0.15;clearInterval(iv)}S.audio.volume=v},60)}})}
+function initAudio(){S.audio=new Audio();S.audio.src='assets/audio/ranjha-flute.mp3';S.audio.loop=false;S.audio.volume=0;S.audio.preload='auto';S.audio.addEventListener('canplaythrough',()=>S.aOk=true);S.audio.addEventListener('error',()=>{});S.audio.addEventListener('ended',()=>{if(S._xf)return;S.audio.currentTime=2;S.audio.play().catch(()=>{});if(S.soundOn){let v=0;const iv=setInterval(()=>{v+=0.04;if(v>=0.15){v=0.15;clearInterval(iv)}S.audio.volume=v},60)}})}
 function startAudio(){if(!S.audio||S.aPlay)return;S.aPlay=true;try{S.audio.currentTime=2;S.audio.volume=0.15;S.audio.play().catch(()=>{})}catch(e){}try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=196;g.gain.setValueAtTime(0.08,a.currentTime);g.gain.exponentialRampToValueAtTime(0.001,a.currentTime+4.5);o.connect(g);g.connect(a.destination);o.start(a.currentTime);o.stop(a.currentTime+5)}catch(e){}}
 function fadeOutAudio(){if(!S.audio||!S.aPlay)return;let v=Math.min(S.audio.volume||0.15,0.15);const iv=setInterval(()=>{v-=0.006;if(v<=0){v=0;clearInterval(iv);try{S.audio.pause()}catch(e){}}S.audio.volume=Math.max(v,0)},80)}
 function tapTitle(e){
