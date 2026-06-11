@@ -122,7 +122,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 .flower.rose .stem{width:5px;left:58px;background:linear-gradient(to top,#1a3a18,#3a6a30);box-shadow:0 0 15px rgba(58,106,48,0.15)}
 .flower.rose .stem::before{left:-3px;width:14px;height:8px;background:#3a6a30}
 .flower.rose .stem::after{right:-3px;width:12px;height:6px;background:#2a5a24}
-.flower.rose .sprout{width:6px;box-shadow:0 0 12px rgba(126,200,126,0.2)}
+.flower.rose .sprout{display:none}
 .flower.rose.seed .stem{opacity:1;animation:stemUp 0.7s ease-out forwards}
 .flower.rose-bud .stem,.flower.rose-bloom .stem{opacity:1;height:var(--stem-h,120px);animation:sway var(--sway,3.5s) ease-in-out infinite}
 .flower .head.rose{width:120px;height:120px;left:0;bottom:calc(var(--stem-h,120px));border-radius:50% 48% 52% 50% / 55% 52% 48% 45%;box-shadow:0 0 60px 15px rgba(255,215,140,0.12),0 0 120px 40px rgba(255,215,140,0.04)}
@@ -147,8 +147,8 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 #card .close{position:absolute;top:0.7rem;right:0.7rem;width:28px;height:28px;border-radius:50%;border:1px solid rgba(245,240,232,0.06);background:rgba(245,240,232,0.02);color:rgba(245,240,232,0.35);font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.25s;font-family:'Inter',sans-serif;line-height:1}
 #card .close:hover{background:rgba(245,240,232,0.06);color:#f5f0e8}
 #card .num{font-size:0.55rem;letter-spacing:0.12em;color:rgba(245,240,232,0.15);border:1px solid rgba(245,240,232,0.04);padding:0.2em 0.6em;border-radius:20px;display:inline-block;margin-bottom:0.7rem;font-weight:300}
-#card .photo{width:100%;aspect-ratio:4/3;border-radius:8px;overflow:hidden;margin-bottom:1rem;background:linear-gradient(135deg,rgba(35,30,50,0.3),rgba(20,30,25,0.3));display:flex;align-items:center;justify-content:center;position:relative}
-#card .photo img{width:100%;height:100%;object-fit:cover;display:none}
+  #card .photo{width:100%;border-radius:8px;overflow:hidden;margin-bottom:1rem;background:linear-gradient(135deg,rgba(35,30,50,0.3),rgba(20,30,25,0.3));display:flex;align-items:center;justify-content:center;position:relative;max-height:45vh}
+  #card .photo img{max-width:100%;max-height:45vh;width:auto;height:auto;object-fit:contain;display:none;border-radius:4px}
 #card .photo .ph{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(245,240,232,0.1);font-size:0.75rem}
 #card h2{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(1.1rem,2.6vw,1.4rem);color:#f5f0e8;margin-bottom:0.15rem;line-height:1.3}
 #card .dt{font-weight:300;font-size:0.65rem;color:rgba(245,240,232,0.25);letter-spacing:0.04em;margin-bottom:0.7rem}
