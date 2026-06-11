@@ -125,11 +125,11 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-even
 .flower.rose .sprout{display:none}
 .flower.rose.seed .stem{opacity:1;animation:stemUp 0.7s ease-out forwards}
 .flower.rose-bud .stem,.flower.rose-bloom .stem{opacity:1;height:var(--stem-h,120px);animation:sway var(--sway,3.5s) ease-in-out infinite}
-.flower .head.rose{width:120px;height:120px;left:0;bottom:calc(var(--stem-h,120px));border-radius:50% 48% 52% 50% / 55% 52% 48% 45%;box-shadow:0 0 60px 15px rgba(255,215,140,0.12),0 0 120px 40px rgba(255,215,140,0.04)}
+.flower .head.rose{width:120px;height:120px;left:0;bottom:calc(var(--stem-h,120px));box-shadow:0 0 60px 15px rgba(255,215,140,0.12),0 0 120px 40px rgba(255,215,140,0.04);background:transparent}
 .flower .head.rose svg{width:100%;height:100%;display:block;filter:drop-shadow(0 0 30px rgba(255,215,140,0.15))}
 .flower.rose-bud .head.rose{opacity:1;transform:scale(.3) rotate(-8deg);animation:roseReveal 3.5s cubic-bezier(.34,1.56,.64,1) forwards}
 @keyframes roseReveal{0%{opacity:0;transform:scale(.15) rotate(-12deg)}30%{opacity:1;transform:scale(.5) rotate(-5deg)}70%{opacity:1;transform:scale(1.08) rotate(1deg)}100%{opacity:1;transform:scale(1) rotate(0deg)}}
-.flower .head.rose::after{width:24px;height:24px;margin:-12px 0 0 -12px;background:radial-gradient(circle,#fff 0%,#f5e6d0 60%,transparent 100%);box-shadow:0 0 20px rgba(255,255,255,0.2)}
+.flower .head.rose::after{display:none}
 .flower.rose-bloom .head.rose,.flower.rose-bloom .head.rose svg{opacity:1;transform:scale(1)}
 .flower.rose .tap-hint{bottom:calc(var(--stem-h,120px) + 130px);width:80px;left:-14px;font-size:.9rem}
 .flower.rose-bloom .tap-hint{opacity:1;animation:hintFloat 2.5s ease-in-out infinite}
@@ -330,7 +330,7 @@ function makeHead(c,cc,g){
 function makeRose(){
   const el=document.createElement('div');el.className='head rose svg';
   const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');
-  svg.setAttribute('viewBox','0 0 100 100');
+  svg.setAttribute('viewBox','0 -20 100 100');
   const d='<defs><linearGradient id="rg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f5e4d0"/><stop offset="100%" stop-color="#e8d0b8"/></linearGradient><linearGradient id="rg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff5ea"/><stop offset="100%" stop-color="#f5e4d0"/></linearGradient><linearGradient id="rg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#faf0e0"/></linearGradient><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5a8a4a"/><stop offset="100%" stop-color="#3a6a30"/></linearGradient></defs>';
   svg.innerHTML=d;
   svg.innerHTML+='<ellipse cx="50" cy="74" rx="16" ry="6" fill="#3a5a2a"/><path d="M48,72 Q36,66 30,74 Q38,76 48,72" fill="url(#sg)"/><path d="M52,72 Q64,66 70,74 Q62,76 52,72" fill="url(#sg)"/><path d="M44,72 Q40,78 50,80 Q60,78 56,72" fill="url(#sg)"/><path d="M50,70 C22,64 8,44 14,30 C20,16 34,20 40,32 C44,40 48,56 50,70" fill="url(#rg1)"/><path d="M50,70 C78,64 92,44 86,30 C80,16 66,20 60,32 C56,40 52,56 50,70" fill="url(#rg1)"/><path d="M50,66 C28,58 16,40 22,26 C28,12 40,16 46,28 C48,34 49,50 50,66" fill="url(#rg2)"/><path d="M50,66 C72,58 84,40 78,26 C72,12 60,16 54,28 C52,34 51,50 50,66" fill="url(#rg2)"/><path d="M50,60 C34,52 24,36 30,22 C36,10 46,14 50,26 C52,34 50,48 50,60" fill="url(#rg3)"/><path d="M50,60 C66,52 76,36 70,22 C64,10 54,14 50,26 C48,34 50,48 50,60" fill="url(#rg3)"/><path d="M50,52 C40,46 34,32 40,18 C44,10 50,10 50,20" fill="#fff"/><path d="M50,52 C60,46 66,32 60,18 C56,10 50,10 50,20" fill="#fff"/><path d="M50,44 C44,40 42,28 50,16 C58,28 56,40 50,44" fill="#fff8f0"/><path d="M50,36 C46,32 46,22 50,16 C54,22 54,32 50,36" fill="#fff" opacity="0.6"/>';
