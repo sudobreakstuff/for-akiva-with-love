@@ -383,8 +383,7 @@ function plant(x,y){
   makeFlower(data,S.next,x,y);
 }
 function openCard(i){
-  const data=FLOWERS[i];if(!data)return;
-  const f=flowers.find(f=>f.index===i);if(f&&f.state==='opened')return;if(f)f.state='opened';
+  const data=FLOWERS[i];if(!data||document.getElementById('card').classList.contains('show'))return;
   document.getElementById('card').classList.toggle('last',i===8);
   document.getElementById('cardNum').textContent=`flower ${i+1} of ${FLOWERS.length}`;
   document.getElementById('cardT').textContent=data.t;
