@@ -393,7 +393,7 @@ function openCard(i){
   img.style.display='none';ph.style.display='flex';ph.textContent='✦';
   img.onload=()=>{ph.style.display='none';img.style.display='block'};
   img.onerror=()=>{ph.style.display='flex';img.style.display='none';ph.textContent='✦ a memory awaits'};
-  img.src=`assets/photos/${i+1}.png`;
+  img.src=`assets/photos/${i+1}.jpg`;
   if(S.bloomed<=i){S.bloomed=Math.max(S.bloomed,i+1);initFlies()}
   document.getElementById('card').classList.add('show');
   document.getElementById('bloomN').textContent=S.bloomed;
