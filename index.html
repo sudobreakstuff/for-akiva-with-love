@@ -316,6 +316,7 @@ function anim(){ctx.clearRect(0,0,W,H);
    }
    requestAnimationFrame(anim)}
 anim();
+setInterval(()=>{if(S.aPlay&&S.audio&&S.audio.duration&&!S._xf){const r=S.audio.duration-S.audio.currentTime;if(r<1.8&&r>0.3){S._xf='out';S._xv=S.soundOn?S.audio.volume:0}}},200);
 setInterval(()=>{if(S.started&&Math.random()<0.4)spawnShoot()},3500);
 setInterval(()=>{if(S.started)spawnPetal()},2800);
 setInterval(()=>{if(S.started)spawnHeart()},2000);
@@ -400,7 +401,7 @@ function openCard(i){
   if(S.bloomed>=FLOWERS.length)setTimeout(()=>showFinale(),1200);
 }
 function showFinale(){if(S.finale)return;S.finale=true;document.getElementById('finale').classList.add('show');for(let i=0;i<6;i++)setTimeout(()=>{brst(W*0.5+(Math.random()-0.5)*200,H*0.3+(Math.random()-0.5)*120,'#ffd700',30)},i*400)}
-function initAudio(){S.audio=new Audio();S.audio.src='assets/audio/ranjha-flute.mp3';S.audio.loop=false;S.audio.volume=0;S.audio.preload='auto';S.audio.addEventListener('canplaythrough',()=>S.aOk=true);S.audio.addEventListener('error',()=>{});S.audio.addEventListener('ended',()=>{if(S._xf)return;S.audio.currentTime=2;S.audio.play().catch(()=>{});if(S.soundOn){let v=0;const iv=setInterval(()=>{v+=0.04;if(v>=0.15){v=0.15;clearInterval(iv)}S.audio.volume=v},60)}})}
+function initAudio(){S.audio=new Audio();S.audio.src='assets/audio/ranjha-flute.mp3';S.audio.loop=false;S.audio.volume=0;S.audio.preload='auto';S.audio.addEventListener('canplaythrough',()=>S.aOk=true);S.audio.addEventListener('error',()=>{});S.audio.addEventListener('timeupdate',()=>{if(!S.aPlay||!S.audio.duration||S._xf)return;const r=S.audio.duration-S.audio.currentTime;if(r<1.8&&r>0.3){S._xf='out';S._xv=S.soundOn?S.audio.volume:0}});S.audio.addEventListener('ended',()=>{S._xf=false;S.audio.currentTime=2;S.audio.play().catch(()=>{});if(S.soundOn){S.audio.volume=0;let v=0;const iv=setInterval(()=>{v+=0.04;if(v>=0.15){v=0.15;clearInterval(iv)}S.audio.volume=v},60)}})}
 function startAudio(){if(!S.audio||S.aPlay)return;S.aPlay=true;try{S.audio.currentTime=2;S.audio.volume=0.15;S.audio.play().catch(()=>{})}catch(e){}try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=196;g.gain.setValueAtTime(0.08,a.currentTime);g.gain.exponentialRampToValueAtTime(0.001,a.currentTime+4.5);o.connect(g);g.connect(a.destination);o.start(a.currentTime);o.stop(a.currentTime+5)}catch(e){}}
 function fadeOutAudio(){if(!S.audio||!S.aPlay)return;let v=Math.min(S.audio.volume||0.15,0.15);const iv=setInterval(()=>{v-=0.006;if(v<=0){v=0;clearInterval(iv);try{S.audio.pause()}catch(e){}}S.audio.volume=Math.max(v,0)},80)}
 function tapTitle(e){
